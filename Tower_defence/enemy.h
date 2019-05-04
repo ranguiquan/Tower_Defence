@@ -14,11 +14,13 @@ public:
     double get_direction_y()const{return direction_y;}
     int getLife(){return life;}
     void setLife(int l){life = l;}
+
 protected:
     int life;
     int velocity;
     double direction_x;
     double direction_y;
+
 };
 
 #endif // ENEMY_H

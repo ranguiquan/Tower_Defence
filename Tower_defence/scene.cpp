@@ -3,6 +3,7 @@
 #include "config.h"
 #include <QDebug>
 #include <math.h>
+#include "tool.h"
 Scene::Scene()
 {
     Tower* displayedTower = new Tower("attacker", false);
@@ -33,9 +34,11 @@ void Scene::show(QPainter* p){
         towers[i]->handleCoolDown();
     }
     processor_hatredControll();
-    creator_bullets();
+    processor_Tower_rotate();
     processor_Move();
+    creator_bullets();
     processor_damageConfirm();
+
 
 
 
@@ -190,6 +193,29 @@ void Scene::processor_damageConfirm(){
             }
         }
 
+    }
+}
+void Scene::processor_Tower_rotate(){
+    int i;
+    for(i = 0; i < towers.size(); i++){
+        if(!towers[i]->hatred.isEmpty()){
+            MyPoint vec_aim;
+            MyPoint aim(towers[i]->hatred[0]->getPosition());
+            MyPoint pole(towers[i]->getPosition());
+            vec_aim.setX(aim.x()-pole.x());
+            vec_aim.setY(aim.y()-pole.y());
+            double angle_aim = Tool::vector_to_angle(vec_aim);
+            if(abs(angle_aim - towers[i]->getAngle()) > towers[i]->get_velocity_rotaion()/FPS){
+                //缓慢旋转中
+                towers[i]->setAngle(towers[i]->getAngle()
+                                    + Tool::sign(angle_aim - towers[i]->getAngle())//这是一个符号函数，算方向的
+                                    * towers[i]->get_velocity_rotaion()/FPS);
+                towers[i]->setFireReady(false);
+            }else{
+                //能转到，爽
+                towers[i]->setAngle(angle_aim);
+            }
+        }
     }
 }
 

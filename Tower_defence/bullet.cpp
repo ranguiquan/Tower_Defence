@@ -3,6 +3,7 @@
 #include <config.h>
 #include "scene.h"
 #include <QDebug>
+#include "mypoint.h"
 
 Bullet::Bullet(Tower* parent, Enemy* target)
 {
@@ -10,12 +11,14 @@ Bullet::Bullet(Tower* parent, Enemy* target)
     this->damage = parent->getDamage();
     this->icon = new QPixmap;
     icon->load(":/pictures/bullet_test.png");
-    width = BULLET_WIDTH;
-    height = BULLET_WIDTH;
+    this->width = BULLET_WIDTH;
+    this->height = BULLET_WIDTH;
     this->velocity = BULLET_VELOCITY;
     this->position.setX(parent->getPosition().x());
     this->position.setY(parent->getPosition().y());
     //方向想引入随机数
+
+
     double dis = Scene::distance((parent->getPosition()), (target->getPosition()));
     double x = target->getPosition().x()-parent->getPosition().x();
     double y = target->getPosition().y()-parent->getPosition().y();

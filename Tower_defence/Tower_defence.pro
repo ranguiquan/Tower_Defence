@@ -32,7 +32,8 @@ SOURCES += \
     tower.cpp \
     enemy.cpp \
     bullet.cpp \
-    mypoint.cpp
+    mypoint.cpp \
+    tool.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     tower.h \
     enemy.h \
     bullet.h \
-    mypoint.h
+    mypoint.h \
+    tool.h
 
 FORMS += \
         mainwindow.ui

@@ -29,6 +29,7 @@ public:
     void creator_bullets();//子弹生成器
     void processor_damageConfirm();//确认造成伤害
     void processor_Move();//使子弹、敌人移动
+    void processor_Tower_rotate();//炮塔的旋转
 
     static double distance(MyPoint a, MyPoint b);
 private:

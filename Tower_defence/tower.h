@@ -28,6 +28,10 @@ public:
         coolDown = fireInterval;
     }
     QVector<Enemy*> hatred;
+    void show(QPainter* p);
+    double getAngle()const{return angle;}
+    void setAngle(double r){angle = r;}
+    double get_velocity_rotaion()const{return velocity_rotation;}
 
 
 private:
@@ -39,6 +43,8 @@ private:
     bool fireReady;
     double fireInterval;
     double coolDown;
+    double angle;
+    double velocity_rotation;
 };
 
 #endif // TOWER_H

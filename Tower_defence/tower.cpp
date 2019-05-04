@@ -20,7 +20,8 @@ Tower::Tower(string name, bool isInstanlized)
             fireReady = false;
             fireInterval = ATTACKER_FIRE_INTERVAL;
             coolDown = ATTACKER_FIRE_INTERVAL;
-
+            velocity_rotation = ATTACKER_VELOCITY_ROTATION;
+            angle = 180;
 
         }else{
 
@@ -42,4 +43,12 @@ void Tower::handleCoolDown(){
     }
     //qDebug()<<"cooldown:"<<coolDown<<endl;
     //qDebug()<<"fireReady"<<fireReady<<endl;
+}
+void Tower::show(QPainter *p){
+    p->translate(this->position.x(), this->position.y());
+    p->rotate(angle);
+    p->drawPixmap(-width/2,-height/2,width, height, *icon);
+    p->rotate(-angle);
+    p->translate(-this->position.x(), -this->position.y());
+
 }
