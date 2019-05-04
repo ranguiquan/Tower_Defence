@@ -30,7 +30,7 @@ public:
     void processor_damageConfirm();//确认造成伤害
     void processor_Move();//使子弹、敌人移动
 
-    static double distance(QPoint a, QPoint b);
+    static double distance(MyPoint a, MyPoint b);
 private:
     QVector<Tower*> towers;
     QVector<Enemy*> enemies;

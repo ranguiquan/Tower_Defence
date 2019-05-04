@@ -2,7 +2,7 @@
 #define BULLET_H
 #include "gameobject.h"
 #include "tower.h"
-#include <QPoint>
+#include "mypoint.h"
 
 
 class Bullet: public GameObject
@@ -13,6 +13,7 @@ public:
     int get_velocity()const{return velocity;}
     double get_direction_x()const{return direction_x;}
     double get_direction_y()const{return direction_y;}
+    int getDamage(){return damage;}
 protected:
     Tower* parent;
     int damage;

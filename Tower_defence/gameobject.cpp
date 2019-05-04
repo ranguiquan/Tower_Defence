@@ -1,6 +1,6 @@
 #include "gameobject.h"
 #include <math.h>
-GameObject::GameObject():position(0,20)
+GameObject::GameObject()
 {
     icon = new QPixmap;
     icon->load(":/pictures/tower_test.png");
@@ -11,7 +11,7 @@ GameObject::GameObject():position(0,20)
 GameObject::~GameObject(){
     delete icon;
 }
-void GameObject::setGameObject(int x, int y){
+void GameObject::setGameObject(double x, double y){
 
     position.setX(x);
     position.setY(y);
@@ -22,6 +22,11 @@ void GameObject::show(QPainter* p){
 }
 bool GameObject::isMouseEventInIt(QMouseEvent *e){
     if(abs(e->x()-position.x()) < width/2 && abs(e->y()-position.y()) < height/2){
+        return true;
+    }else{return false;}
+}
+bool GameObject::isMyPointInIt(MyPoint p){
+    if(abs(p.x()-position.x()) < width/2 && abs(p.y()-position.y()) < height/2){
         return true;
     }else{return false;}
 }

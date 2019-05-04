@@ -35,6 +35,7 @@ void Scene::show(QPainter* p){
     processor_hatredControll();
     creator_bullets();
     processor_Move();
+    processor_damageConfirm();
 
 
 
@@ -52,7 +53,9 @@ void Scene::show(QPainter* p){
         dragedTower[i]->show(p);
     }
     for(i = 0; i < enemies.size(); i++){
-        enemies[i]->show(p);
+        if(enemies[i]->getLife() > 0){
+            enemies[i]->show(p);
+        }
     }
     for(i = 0; i < bullets.size(); i++){
         bullets[i]->show(p);
@@ -91,7 +94,7 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
             Tower* tmp = dragedTower[i];
             dragedTower.remove(i,1);
             i--;
-            //delete tmp;
+            delete tmp;
             qDebug()<<"dragedTower.size():"<<dragedTower.size()<<endl;
         }
         qDebug()<<"!!!"<<endl;
@@ -115,7 +118,7 @@ void Scene::processor_keyPressEvent(QKeyEvent *e){
 }
 
 
-double Scene::distance(QPoint a, QPoint b){
+double Scene::distance(MyPoint a, MyPoint b){
     double x = pow(a.x()-b.x(),2);
     double y = pow(a.y()-b.y(),2);
     double ans = pow(x+y,0.5);
@@ -130,13 +133,12 @@ void Scene::processor_hatredControll(){
             double dis = distance(towers[i]->getPosition(), enemies[j]->getPosition());
             int index = towers[i]->hatred.indexOf(enemies[j]);
             if(dis<= towers[i]->get_discovery_range()
-                    && index==-1){
+                    && index==-1 && enemies[j]->getLife() > 0){
                 towers[i]->hatred.push_back(enemies[j]);
                 qDebug()<<"add to hatred\n";
             }
-            if(dis > towers[i]->get_discovery_range()
-                    && index != -1){
-                towers[i]->hatred.remove(index, 1);
+            if(index != -1 &&(dis > towers[i]->get_discovery_range() || enemies[j]->getLife() <= 0)){
+                towers[i]->hatred.erase(towers[i]->hatred.begin()+index);
             }
         }
     }
@@ -159,18 +161,39 @@ void Scene::creator_bullets()
 void Scene::processor_Move(){
     int i;
     for(i = 0; i < enemies.size(); i++){
-        int xPre = enemies[i]->getPosition().x();
-        int yPre = enemies[i]->getPosition().y();
-        int x = xPre + enemies[i]->get_velocity()*enemies[i]->get_direction_x()/FPS;
-        int y = yPre + enemies[i]->get_velocity()*enemies[i]->get_direction_y()/FPS;
+        double xPre = enemies[i]->getPosition().x();
+        double yPre = enemies[i]->getPosition().y();
+        double x = xPre + enemies[i]->get_velocity()*enemies[i]->get_direction_x()/FPS;
+        double y = yPre + enemies[i]->get_velocity()*enemies[i]->get_direction_y()/FPS;
         enemies[i]->setGameObject(x, y);
     }
     for(i = 0; i < bullets.size(); i++){
-        int xPre = bullets[i]->getPosition().x();
-        int yPre = bullets[i]->getPosition().y();
-        int x = xPre + bullets[i]->get_velocity()*bullets[i]->get_direction_x()/FPS;
-        int y = yPre + bullets[i]->get_velocity()*bullets[i]->get_direction_y()/FPS;
+        double xPre = bullets[i]->getPosition().x();
+        double yPre = bullets[i]->getPosition().y();
+        double x = xPre + bullets[i]->get_velocity()*bullets[i]->get_direction_x()/FPS;
+        double y = yPre + bullets[i]->get_velocity()*bullets[i]->get_direction_y()/FPS;
         bullets[i]->setGameObject(x, y);
     }
 
 }
+
+void Scene::processor_damageConfirm(){
+    int i, j;
+    for(i = 0; i < enemies.size(); i++){
+        for(j = 0; j < bullets.size(); j++){
+            if(enemies[i]->isMyPointInIt(bullets[j]->getPosition())){
+                enemies[i]->setLife(enemies[i]->getLife() - bullets[j]->getDamage());
+                delete bullets[j];
+
+                bullets.erase(bullets.begin()+j);
+                j--;
+            }
+        }
+
+    }
+}
+
+
+
+
+
