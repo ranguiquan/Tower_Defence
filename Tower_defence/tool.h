@@ -8,9 +8,9 @@ class Tool
 {
 public:
     Tool();
-    static double vector_to_angle(MyPoint p);
-    static MyPoint angel_to_vector(double angle);
-    static int sign(double a);
+    static double vector_to_angle(MyPoint p);//把向量转换成角度制的∠
+    static MyPoint angel_to_vector(double angle);//上面的反过来
+    static int sign(double a);//符号函数
 };
 
 #endif // TOOL_H

@@ -3,6 +3,7 @@
 
 
 class MyPoint
+        //自定义的点类，为什么要自定义？一言难尽呐
 {
 public:
     MyPoint();

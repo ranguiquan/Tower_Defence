@@ -27,7 +27,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QTimer* refresher;
+    QTimer* refresher;//刷新用计时器
     Scene world;
 };
 
