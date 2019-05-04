@@ -21,7 +21,7 @@ void GameObject::show(QPainter* p){
     p->drawPixmap(this->position.x()-width/2, this->position.y()-height/2, width, height, *icon);
 }
 bool GameObject::isMouseEventInIt(QMouseEvent *e){
-    if(abs(e->x()-position.x()) < width && abs(e->y()-position.y()) < height){
+    if(abs(e->x()-position.x()) < width/2 && abs(e->y()-position.y()) < height/2){
         return true;
     }else{return false;}
 }

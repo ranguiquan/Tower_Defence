@@ -4,8 +4,10 @@
 #include <QPainter>
 #include <vector>
 #include "gameobject.h"
+#include <QPixmap>
 #include "tower.h"
 #include "enemy.h"
+#include "bullet.h"
 
 
 
@@ -21,12 +23,21 @@ public:
 
     void processor_mouseMoveEvent(QMouseEvent* e);
     void processor_mousePressEvent(QMouseEvent* e);
+    void processor_keyPressEvent(QKeyEvent* e);
 
+    void processor_hatredControll();//管理仇恨列表
+    void creator_bullets();//子弹生成器
+    void processor_damageConfirm();//确认造成伤害
+    void processor_Move();//使子弹、敌人移动
+
+    static double distance(QPoint a, QPoint b);
 private:
-    std::vector<Tower*> towers;
-    std::vector<Enemy*> enemies;
-    std::vector<Tower*> displayMenuOfTowers;
-    std::vector<Tower*> dragedTower;
+    QVector<Tower*> towers;
+    QVector<Enemy*> enemies;
+    QVector<Tower*> displayMenuOfTowers;
+    QVector<Tower*> dragedTower;
+    QVector<Bullet*> bullets;
+    QPixmap* background;
 };
 
 #endif // SCENE_H

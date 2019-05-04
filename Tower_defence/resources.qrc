@@ -2,5 +2,7 @@
     <qresource prefix="/pictures">
         <file>backGround2.png</file>
         <file>tower_test.png</file>
+        <file>enemy_test.png</file>
+        <file>bullet_test.png</file>
     </qresource>
 </RCC>

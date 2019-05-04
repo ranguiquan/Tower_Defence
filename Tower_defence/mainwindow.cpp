@@ -20,10 +20,10 @@ MainWindow::MainWindow(QMainWindow *parent) :
 
     //world.setScene("");//初始化游戏世界
 
-    //设计计时器，以20帧刷新画面
+    //设计计时器，以FPS帧数刷新画面
     this->refresher = new QTimer;
     refresher->start(1000/FPS);
-    QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(refresher_receiver()));
+    QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(update()));
 
 
 
@@ -41,12 +41,9 @@ void MainWindow::paintEvent(QPaintEvent* e){
     delete p;
 }
 
-void slots MainWindow::refresher_receiver(){
-    this->repaint();
-}
 
 void MainWindow::keyPressEvent(QKeyEvent* e){
-
+    world.processor_keyPressEvent(e);
 }
 void MainWindow::mousePressEvent(QMouseEvent* e){
     world.processor_mousePressEvent(e);

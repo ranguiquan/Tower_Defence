@@ -25,10 +25,6 @@ public:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
 
-protected slots:
-    void refresher_receiver();//槽，直接用来调repaint()
-
-
 private:
     Ui::MainWindow *ui;
     QTimer* refresher;

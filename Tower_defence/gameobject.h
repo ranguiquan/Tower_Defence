@@ -11,6 +11,9 @@ public:
     explicit GameObject();
     ~GameObject();
     void setGameObject(int x, int y);
+    QPoint getPosition(){
+        return position;
+    }
     void show(QPainter* p);
     bool isMouseEventInIt(QMouseEvent* e);
 protected:

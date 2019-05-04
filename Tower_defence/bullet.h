@@ -1,22 +1,25 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef BULLET_H
+#define BULLET_H
 #include "gameobject.h"
-#include <vector>
+#include "tower.h"
 #include <QPoint>
 
-class Enemy: public GameObject
+
+class Bullet: public GameObject
 {
 public:
-    explicit Enemy();
-    ~Enemy(){}
+    Bullet(Tower* parent, Enemy* target);
+    ~Bullet();
     int get_velocity()const{return velocity;}
     double get_direction_x()const{return direction_x;}
     double get_direction_y()const{return direction_y;}
 protected:
-    int life;
+    Tower* parent;
+    int damage;
     int velocity;
     double direction_x;
     double direction_y;
+
 };
 
-#endif // ENEMY_H
+#endif // BULLET_H
