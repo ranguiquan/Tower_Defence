@@ -23,6 +23,12 @@
 #define ENEMY_1_HEIGHT 80
 #define ENEMY_1_LIFE 100
 #define ENEMY_1_VELOCITY 50
+#define ENEMY_TYPE 10
+
+//主人公数据
+#define PLAYER_1_WIDTH 40
+#define PLAYER_1_HEIGHT 80
+#define PLAYER_1_LIFE 100
 
 //子弹数据
 #define BULLET_WIDTH 20
