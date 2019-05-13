@@ -4,6 +4,10 @@
 #include <QDebug>
 #include <math.h>
 #include "tool.h"
+#include <QtGlobal>
+#include <QTime>
+#include <QTimer>
+
 Scene::Scene()
 {
     Tower* displayedTower = new Tower("attacker", false);
@@ -12,9 +16,7 @@ Scene::Scene()
 
     background = new QPixmap;
     background->load(":/pictures/backGround2.png");
-
-    Enemy* e = new Enemy();
-    this->enemies.push_back(e);
+    Player *player = new Player;
 
 }
 
@@ -27,19 +29,22 @@ Scene::~Scene(){
 
 void Scene::show(QPainter* p){
     //画背景
-
+    player->show(p);
+    time = QTime::currentTime();
     p->drawPixmap(0,MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
     int i;
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
     }
+
     processor_hatredControll();
     processor_Tower_rotate();
     processor_Move();
     creator_bullets();
     processor_damageConfirm();
-
-
+    if((int(time.second())%5)==0)
+         enemy_generator();
+    object_delete();
 
 
     for(i = 0; i < towers.size(); i++){
@@ -116,7 +121,6 @@ void Scene::processor_keyPressEvent(QKeyEvent *e){
         qDebug()<<"delete\n";
         delete enemies[0];
         qDebug()<<"after delete\n";
-
     }
 }
 
@@ -219,6 +223,47 @@ void Scene::processor_Tower_rotate(){
     }
 }
 
+
+void Scene::enemy_generator()
+{
+    int a,b;
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    a=qrand()%7;//设置生成的敌人种类，种类数为7
+
+    b=qrand()%3;//设置一次生成的敌人个数，敌人个数不超过3
+    Enemy *e[b];
+    for(int i=0;i<b;i++)
+    {
+        e[i] = new Enemy();
+        enemies.push_back(e[i]);
+    }
+}//未完成，随机生成种类不同敌人部分待补充
+
+void Scene::object_delete()
+{
+    for(QVector<Enemy*>::iterator iter=enemies.begin(); iter!=enemies.end(); )
+    {
+        if(((*iter)->getLife())<=0)
+        {
+            delete *iter;
+            iter =  enemies.erase(iter);
+        }
+        if(((*iter)->getPosition_x())>=(MAINWINDOW_WIDTH-ENEMY_1_WIDTH/2))
+        {
+            player->setLife(player->getLife()-1);
+            delete *iter;
+            iter =  enemies.erase(iter);
+        }
+        else
+        {
+            iter++;
+        }
+    }
+   if(player->getLife()==0)
+   {
+       //游戏结束，失败
+   }
+}
 
 
 
