@@ -2,7 +2,9 @@
 #include "ui_mainwindow.h"
 #include <Windows.h>
 #include "config.h"
+#include "scene.h"
 #include <QDebug>
+#include <QTime>
 
 MainWindow::MainWindow(QMainWindow *parent) :
     QMainWindow (parent),
@@ -15,7 +17,7 @@ MainWindow::MainWindow(QMainWindow *parent) :
     centralWidget()->setMouseTracking(true);
 
 
-    setWindowFlags(false);
+    setWindowFlags(Qt::WindowCloseButtonHint);
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
 
     //world.setScene("");//初始化游戏世界
@@ -26,7 +28,15 @@ MainWindow::MainWindow(QMainWindow *parent) :
     QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(update()));
 
 
-
+/* 备用的生成敌人的计时器，两种方法在绘制中都会出现重影现象
+    //设计计时器，添加新的敌人
+    QTimer *timer = new QTimer(this);
+    int f;
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    f=qrand()%3;//设置生成的敌人频率
+    timer->start(5000/f);
+    QObject::connect(timer, SIGNAL(timeout()), &world, SLOT(enemy_generator()));
+*/
 }
 
 MainWindow::~MainWindow()

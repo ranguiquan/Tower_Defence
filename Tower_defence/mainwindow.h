@@ -23,12 +23,13 @@ public:
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* e);
     void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);  
 
 private:
     Ui::MainWindow *ui;
     QTimer* refresher;//刷新用计时器
     Scene world;
+
 };
 
 #endif // MAINWINDOW_H

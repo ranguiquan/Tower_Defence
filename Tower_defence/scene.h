@@ -8,12 +8,12 @@
 #include "tower.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "player.h"
+#include <QTime>
 
-
-
-
-class Scene
+class Scene: public QObject
 {
+    Q_OBJECT
 public:
     Scene();
     ~Scene();
@@ -32,8 +32,7 @@ public:
     void processor_damageConfirm();//确认造成伤害
     void processor_Move();//使子弹、敌人移动
     void processor_Tower_rotate();//炮塔的旋转
-
-    //我们至少还需要一个敌人生成器
+    void object_delete();//对象出界删除，删除到达终点或失去生命的敌人，删除生命为0的炮塔，删除死亡的主角
 
 
     static double distance(MyPoint a, MyPoint b);//返回两点间距离，不应该放在这，懒得改了，乐意改的话可以优化一下
@@ -45,6 +44,11 @@ private:
     QVector<Tower*> dragedTower;//被鼠标拖动的塔
     QVector<Bullet*> bullets;//子弹容器
     QPixmap* background;//背景
+    Player *player;
+    QTime time;
+
+private slots:
+    void enemy_generator();//敌人生成器
 };
 
 #endif // SCENE_H

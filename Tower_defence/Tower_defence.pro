@@ -33,7 +33,9 @@ SOURCES += \
     enemy.cpp \
     bullet.cpp \
     mypoint.cpp \
-    tool.cpp
+    tool.cpp \
+    enemy1.cpp \
+    player.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,10 +46,13 @@ HEADERS += \
     enemy.h \
     bullet.h \
     mypoint.h \
-    tool.h
+    tool.h \
+    enemy1.h \
+    player.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
