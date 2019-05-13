@@ -4,5 +4,6 @@
         <file>tower_test.png</file>
         <file>enemy_test.png</file>
         <file>bullet_test.png</file>
+        <file>enemy3.jpg</file>
     </qresource>
 </RCC>

@@ -45,8 +45,7 @@ private:
     QVector<Bullet*> bullets;//子弹容器
     QPixmap* background;//背景
     Player *player;
-    QTime time;
-
+    double secondCounter;
 private slots:
     void enemy_generator();//敌人生成器
 };

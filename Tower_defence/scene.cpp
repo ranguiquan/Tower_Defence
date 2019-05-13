@@ -16,7 +16,8 @@ Scene::Scene()
 
     background = new QPixmap;
     background->load(":/pictures/backGround2.png");
-    Player *player = new Player;
+    player = new Player;
+    secondCounter = 0.0;
 
 }
 
@@ -28,10 +29,10 @@ Scene::~Scene(){
 }*/
 
 void Scene::show(QPainter* p){
+    secondCounter += 1.0/FPS;
     //画背景
     player->show(p);
-    time = QTime::currentTime();
-    p->drawPixmap(0,MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
+    p->drawPixmap(0,0/*MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT*/,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
     int i;
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
@@ -42,8 +43,10 @@ void Scene::show(QPainter* p){
     processor_Move();
     creator_bullets();
     processor_damageConfirm();
-    if((int(time.second())%5)==0)
+    if(((secondCounter - int(secondCounter/5)*5) >= 0.0) && ((secondCounter - int(secondCounter/5)*5) < 1.0/FPS)){
+
          enemy_generator();
+    }
     object_delete();
 
 
@@ -230,33 +233,45 @@ void Scene::enemy_generator()
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     a=qrand()%7;//设置生成的敌人种类，种类数为7
 
-    b=qrand()%3;//设置一次生成的敌人个数，敌人个数不超过3
-    Enemy *e[b];
+    b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过3
     for(int i=0;i<b;i++)
     {
-        e[i] = new Enemy();
-        enemies.push_back(e[i]);
+        Enemy* tmp = new Enemy();
+        tmp->setGameObject(0,100+i*100);
+        enemies.push_back(tmp);
     }
 }//未完成，随机生成种类不同敌人部分待补充
 
 void Scene::object_delete()
 {
-    for(QVector<Enemy*>::iterator iter=enemies.begin(); iter!=enemies.end(); )
+    for(int i = 0; i < enemies.size(); i++)
     {
-        if(((*iter)->getLife())<=0)
+        if(((enemies[i])->getLife())<=0)
         {
-            delete *iter;
-            iter =  enemies.erase(iter);
+            for(int j = 0; j < towers.size(); j++){
+                int index = towers[j]->hatred.indexOf(enemies[i]);
+                if(index != -1){
+                    towers[j]->hatred.erase(towers[j]->hatred.begin() + index);
+                }
+            }
+            delete enemies[i];
+            enemies.erase(enemies.begin() + i);
+            i--;
+            if(i < 0){break;}
         }
-        if(((*iter)->getPosition_x())>=(MAINWINDOW_WIDTH-ENEMY_1_WIDTH/2))
+        if(((enemies[i])->getPosition_x())>=(MAINWINDOW_WIDTH-ENEMY_1_WIDTH/2))
         {
+            for(int j = 0; j < towers.size(); j++){
+                int index = towers[j]->hatred.indexOf(enemies[i]);
+                if(index != -1){
+                    towers[j]->hatred.erase(towers[j]->hatred.begin() + index);
+                }
+            }
             player->setLife(player->getLife()-1);
-            delete *iter;
-            iter =  enemies.erase(iter);
-        }
-        else
-        {
-            iter++;
+            delete enemies[i];
+            enemies.erase(enemies.begin() + i);
+            i--;
+            if(i < 0){break;}
         }
     }
    if(player->getLife()==0)
