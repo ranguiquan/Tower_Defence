@@ -7,6 +7,7 @@ class MyPoint
 {
 public:
     MyPoint();
+    MyPoint(double x, double y);
     MyPoint(const MyPoint& p);
     void setX(double x){this->_x = x;}
     void setY(double y){this->_y = y;}

@@ -13,6 +13,8 @@ MainWindow::MainWindow(QMainWindow *parent) :
 {
     ui->setupUi(this);
 
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+
     setMouseTracking(true);
     centralWidget()->setMouseTracking(true);
 

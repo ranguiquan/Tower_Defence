@@ -71,6 +71,7 @@ void Scene::show(QPainter* p){
     for(i = 0; i < bullets.size(); i++){
         bullets[i]->show(p);
     }
+    player->show(p);
 }
 void Scene::processor_mousePressEvent(QMouseEvent *e){
     int i;
@@ -230,7 +231,6 @@ void Scene::processor_Tower_rotate(){
 void Scene::enemy_generator()
 {
     int a,b;
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     a=qrand()%7;//设置生成的敌人种类，种类数为7
 
     b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过3
