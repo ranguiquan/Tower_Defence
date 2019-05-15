@@ -23,15 +23,18 @@ public:
     void handleCoolDown();//此功能可以移交Scene也可以不移交，不涉及对象之间交互的都可以放到类里面
 
     bool isFireReady() const {return fireReady;}//可以开火了吗？两种情况不行，没冷却，没转过来
-    void setFireReady(bool rd){//开火后重置属性
-        fireReady = rd;
+    void fireCool(){//开火后重置属性
+        fireReady = false;
         coolDown = fireInterval;
     }
+    void setIsFireReady(bool re){fireReady = re;}
     QVector<Enemy*> hatred;//仇恨列表，为了方便Scene管理，放到public了
     void show(QPainter* p);
     double getAngle()const{return angle;}
     void setAngle(double r){angle = r;}
     double get_velocity_rotaion()const{return velocity_rotation;}
+    bool getRotateReady()const{return rotateReady;}
+    void setRotateReady(bool i){rotateReady = i;}
 
 
 private:
@@ -40,6 +43,7 @@ private:
     bool isActivated;//冗余
     bool isChosen;//冗余
     int discoveryRange;//侦测范围
+    bool rotateReady;
     bool fireReady;
     double fireInterval;//开火时间间隔
     double coolDown;//冷却倒计时

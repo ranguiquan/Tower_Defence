@@ -37,3 +37,4 @@ MyPoint Tool::angel_to_vector(double angle){
     return p;
 }
 int Tool::sign(double a){return a>0?1:-1;}
+double Tool::abs(double a){return a>0?a:-a;}

@@ -37,7 +37,7 @@ Tower::~Tower(){
 }
 void Tower::handleCoolDown(){
     coolDown = coolDown- 1.0/FPS;
-    if(coolDown < 0){
+    if(coolDown < 0 ){
         fireReady = true;
         coolDown = fireInterval;
     }

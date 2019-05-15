@@ -31,12 +31,14 @@ Scene::~Scene(){
 void Scene::show(QPainter* p){
     secondCounter += 1.0/FPS;
     //画背景
-    player->show(p);
+    //player->show(p);
     p->drawPixmap(0,0/*MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT*/,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
     int i;
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
     }
+    //必须要先处理冷却，再处理旋转，因为冷却函数把所有已冷却的塔设置成可开火
+    //塔旋转处理器把未旋转到位、以冷却的塔设置成不可开火
 
     processor_hatredControll();
     processor_Tower_rotate();
@@ -71,7 +73,6 @@ void Scene::show(QPainter* p){
     for(i = 0; i < bullets.size(); i++){
         bullets[i]->show(p);
     }
-    player->show(p);
 }
 void Scene::processor_mousePressEvent(QMouseEvent *e){
     int i;
@@ -159,9 +160,10 @@ void Scene::creator_bullets()
     int i;
     for(i = 0; i < towers.size(); i++){
         //qDebug()<<"hatred.isEmpty"<<towers[i]->hatred.isEmpty()<<endl;
-        if(!towers[i]->hatred.isEmpty() && towers[i]->isFireReady()){
+        if(!towers[i]->hatred.isEmpty() && towers[i]->isFireReady() && towers[i]->getRotateReady()){
+            //有仇恨目标、冷却完成、旋转完成，进行开火，同时重置开火属性。
             Enemy* target = towers[i]->hatred[0];
-            towers[i]->setFireReady(false);
+            towers[i]->fireCool();
             Bullet* b = new Bullet(towers[i], target);
             bullets.push_back(b);
             //qDebug()<<"bullet created\n";
@@ -213,15 +215,26 @@ void Scene::processor_Tower_rotate(){
             vec_aim.setX(aim.x()-pole.x());
             vec_aim.setY(aim.y()-pole.y());
             double angle_aim = Tool::vector_to_angle(vec_aim);
-            if(abs(angle_aim - towers[i]->getAngle()) > towers[i]->get_velocity_rotaion()/FPS){
+            if(abs(angle_aim - towers[i]->getAngle()) > towers[i]->get_velocity_rotaion()/FPS
+                    &&abs(angle_aim - towers[i]->getAngle()) - 360 < -towers[i]->get_velocity_rotaion()/FPS){
                 //缓慢旋转中
-                towers[i]->setAngle(towers[i]->getAngle()
+                if(abs(angle_aim - towers[i]->getAngle()) <= 180){
+                        towers[i]->setAngle(towers[i]->getAngle()
                                     + Tool::sign(angle_aim - towers[i]->getAngle())//这是一个符号函数，算方向的
                                     * towers[i]->get_velocity_rotaion()/FPS);
-                towers[i]->setFireReady(false);
+                        towers[i]->setRotateReady(false);
+                }else{
+                        towers[i]->setAngle(towers[i]->getAngle()
+                                    - Tool::sign(angle_aim - towers[i]->getAngle())//这是一个符号函数，算方向的
+                                    * towers[i]->get_velocity_rotaion()/FPS);
+                        towers[i]->setRotateReady(false);
+
+                }
+
             }else{
                 //能转到，爽
                 towers[i]->setAngle(angle_aim);
+                towers[i]->setRotateReady(true);
             }
         }
     }
