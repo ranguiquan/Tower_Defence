@@ -10,7 +10,7 @@ Tower::Tower(string name, bool isInstanlized)
         if(name.compare("attacker") == 0){
             this->damage = ATTACKER_DAMAGE;
             this->icon = new QPixmap;
-            icon->load(":/pictures/tower_test.png");
+            icon->load(":/pictures/tower/tower1.png");
             width = ATTACKER_WIDTH;
             height = ATTACKER_HEIGHT;
             discoveryRange = ATTACKER_DISCOVERY;

@@ -11,7 +11,7 @@ Bullet::Bullet(Tower* parent, Enemy* target)
     this->parent = parent;
     this->damage = parent->getDamage();
     this->icon = new QPixmap;
-    icon->load(":/pictures/bullet_test.png");
+    icon->load(":/pictures/bullet/bullet1.png");
     this->width = BULLET_WIDTH;
     this->height = BULLET_WIDTH;
     this->velocity = BULLET_VELOCITY;

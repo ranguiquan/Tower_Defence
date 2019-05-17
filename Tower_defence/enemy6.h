@@ -1,5 +1,5 @@
-#ifndef ENEMY1_H
-#define ENEMY1_H
+#ifndef ENEMY6_H
+#define ENEMY6_H
 
 #include <QObject>
 #include "gameobject.h"
@@ -7,10 +7,10 @@
 #include "mypoint.h"
 #include "enemy.h"
 
-class Enemy1 : public Enemy
+class Enemy6 : public Enemy
 {
 public:
-    Enemy1();
+    Enemy6();
 };
 
-#endif // ENEMY1_H
+#endif // ENEMY6_H

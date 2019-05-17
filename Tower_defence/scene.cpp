@@ -13,6 +13,9 @@ Scene::Scene()
     Tower* displayedTower = new Tower("attacker", false);
     displayedTower->setGameObject(ATTACKER_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
+    displayedTower=new Tower1("attacker1", false);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER1_HEIGHT/2);
+    displayMenuOfTowers.push_back(displayedTower);
 
     background = new QPixmap;
     background->load(":/pictures/backGround2.png");
@@ -244,16 +247,45 @@ void Scene::processor_Tower_rotate(){
 void Scene::enemy_generator()
 {
     int a,b;
-    a=qrand()%7;//设置生成的敌人种类，种类数为7
-
-    b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过3
+    Enemy* tmp;
+    b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过7
     for(int i=0;i<b;i++)
     {
-        Enemy* tmp = new Enemy();
+        a=qrand()%11;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
+        switch (a)
+        {
+        case 1:
+        case 2:
+        case 3:
+        case 4:tmp = new Enemy();break;
+        case 5:
+        case 6:
+        case 7:
+        case 8:tmp = new Enemy1();break;
+        case 9:
+        case 10:
+        case 11:tmp = new Enemy2();break;
+        case 12:
+        case 13:
+        case 14:tmp = new Enemy3();break;
+        case 15:
+        case 16:
+        case 17:tmp = new Enemy4();break;
+        case 18:
+        case 19:tmp = new Enemy5();break;
+        case 20:
+        case 21:tmp = new Enemy6();break;
+        case 23:
+        case 24:tmp = new Enemy7();break;
+        case 25:
+        case 26:tmp = new Enemy8();break;
+        case 27:tmp = new Enemy9();break;
+        }
+
         tmp->setGameObject(0,100+i*100);
         enemies.push_back(tmp);
     }
-}//未完成，随机生成种类不同敌人部分待补充
+}
 
 void Scene::object_delete()
 {

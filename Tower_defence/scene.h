@@ -6,7 +6,17 @@
 #include "gameobject.h"
 #include <QPixmap>
 #include "tower.h"
+#include "tower1.h"
 #include "enemy.h"
+#include "enemy1.h"
+#include "enemy2.h"
+#include "enemy3.h"
+#include "enemy4.h"
+#include "enemy5.h"
+#include "enemy6.h"
+#include "enemy7.h"
+#include "enemy8.h"
+#include "enemy9.h"
 #include "bullet.h"
 #include "player.h"
 #include <QTime>
