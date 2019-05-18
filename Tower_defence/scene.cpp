@@ -29,19 +29,26 @@ Scene::~Scene(){
 }*/
 
 void Scene::show(QPainter* p){
+
+    //qDebug() << "bullets remain: " << bullets.size()<<endl;
+
+    int i;
     secondCounter += 1.0/FPS;
     //画背景
     //player->show(p);
     p->drawPixmap(0,0/*MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT*/,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
-    int i;
+
+    //仇恨管理一定要在开火管理之前，否则会导致bug
+    processor_hatredControll();
+
+    //处理塔的开火状态
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
     }
+    processor_Tower_rotate();
     //必须要先处理冷却，再处理旋转，因为冷却函数把所有已冷却的塔设置成可开火
     //塔旋转处理器把未旋转到位、以冷却的塔设置成不可开火
 
-    processor_hatredControll();
-    processor_Tower_rotate();
     processor_Move();
     creator_bullets();
     processor_damageConfirm();
@@ -147,7 +154,7 @@ void Scene::processor_hatredControll(){
             if(dis<= towers[i]->get_discovery_range()
                     && index==-1 && enemies[j]->getLife() > 0){
                 towers[i]->hatred.push_back(enemies[j]);
-                qDebug()<<"add to hatred\n";
+                //qDebug()<<"add to hatred\n";
             }
             if(index != -1 &&(dis > towers[i]->get_discovery_range() || enemies[j]->getLife() <= 0)){
                 towers[i]->hatred.erase(towers[i]->hatred.begin()+index);
@@ -287,10 +294,22 @@ void Scene::object_delete()
             if(i < 0){break;}
         }
     }
-   if(player->getLife()==0)
-   {
+
+    for(int i = 0; i < bullets.size(); i++){
+        if(bullets[i]->getPosition_x() < 0
+                || bullets[i]->getPosition_x() > MAINWINDOW_WIDTH
+                || bullets[i]->getPosition_y() < 0
+                || bullets[i]->getPosition_y() > MAINWINDOW_HEIGHT){
+            delete bullets[i];
+            bullets.erase(bullets.begin() + i);
+            i--;
+        }
+    }
+
+    if(player->getLife()==0)
+    {
        //游戏结束，失败
-   }
+    }
 }
 
 
