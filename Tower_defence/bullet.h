@@ -9,6 +9,7 @@ class Bullet: public GameObject
 {
 public:
     Bullet(Tower* parent, Enemy* target);//子弹用炮塔和敌人初始化
+    Bullet(Tower* parent, MyPoint target);
     ~Bullet();
     int get_velocity()const{return velocity;}
     double get_direction_x()const{return direction_x;}

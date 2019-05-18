@@ -21,9 +21,11 @@ public:
     explicit MainWindow(QMainWindow *parent = nullptr);
     ~MainWindow();
     void paintEvent(QPaintEvent* e);
+protected:
     void keyPressEvent(QKeyEvent* e);
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);  
+    void mouseReleaseEvent(QMouseEvent* e);
 
 private:
     Ui::MainWindow *ui;

@@ -21,7 +21,7 @@ Scene::Scene()
     background->load(":/pictures/background/backGround2.png");
     player = new Player;
     secondCounter = 0.0;
-
+    manualMod = false;
 }
 
 Scene::~Scene(){
@@ -102,7 +102,16 @@ void Scene::show(QPainter* p){
 }
 void Scene::processor_mousePressEvent(QMouseEvent *e){
     int i;
-    if(e->button() == Qt::LeftButton){
+    if(e->button() == Qt::LeftButton && manualMod == false){
+        qDebug()<<"geting in\n";
+        for(i = 0; i < towers.size(); i++){
+            if(towers[i]->isMouseEventInIt(e)){
+                towers[i]->setChosen(true);
+                towers[i]->setRotateReady(true);
+                this->manualMod = true;
+
+            }
+        }
         for(i = 0; i < displayMenuOfTowers.size(); i++){
             if(displayMenuOfTowers[i]->isMouseEventInIt(e)){
                 int j;
@@ -112,7 +121,6 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
                 dragedTower.clear();
                 Tower* tmp = new Tower("attacker", false);
                 tmp->setGameObject(e->x(), e->y());
-                tmp->setChosen(true);
                 this->dragedTower.push_back(tmp);
                 return;
             }
@@ -124,24 +132,29 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
 
         }
         dragedTower.clear();
+    }else if(e->button() == Qt::LeftButton && manualMod == true){
+        this->mouseLeftPressed = true;
     }else if(e->button() == Qt::RightButton){
-        qDebug()<<"dragedTower.size():"<<dragedTower.size()<<endl;
-        qDebug()<<"towers.size():"<<towers.size()<<endl;
-
-
         for(i = 0; i <dragedTower.size(); i++){
             Tower* tmp = dragedTower[i];
             dragedTower.remove(i,1);
             i--;
             delete tmp;
-            qDebug()<<"dragedTower.size():"<<dragedTower.size()<<endl;
         }
-        qDebug()<<"!!!"<<endl;
-
+        for(i = 0; i < towers.size(); i++){
+            towers[i]->setChosen(false);
+        }
+        manualMod = false;
 
     }
 }
+void Scene::processor_mouseReleseEvent(QMouseEvent *e){
+    if(e->button() == Qt::LeftButton){
+        this->mouseLeftPressed = false;
+    }
+}
 void Scene::processor_mouseMoveEvent(QMouseEvent *e){
+    this->mouseMoveEventPoint.setByMouseEvent(e);
     int i;
     for(i = 0; i < dragedTower.size(); i++){
         dragedTower[i]->setGameObject(e->x(), e->y());
@@ -186,13 +199,26 @@ void Scene::creator_bullets()
     int i;
     for(i = 0; i < towers.size(); i++){
         //qDebug()<<"hatred.isEmpty"<<towers[i]->hatred.isEmpty()<<endl;
-        if(!towers[i]->hatred.isEmpty() && towers[i]->isFireReady() && towers[i]->getRotateReady()){
+        if(!towers[i]->hatred.isEmpty()
+                && towers[i]->isFireReady()
+                && towers[i]->getRotateReady()
+                && !towers[i]->getIsChosen()){
             //有仇恨目标、冷却完成、旋转完成，进行开火，同时重置开火属性。
             Enemy* target = towers[i]->hatred[0];
             towers[i]->fireCool();
             Bullet* b = new Bullet(towers[i], target);
             bullets.push_back(b);
             //qDebug()<<"bullet created\n";
+        }else if(towers[i]->getIsChosen()
+                 && towers[i]->isFireReady()
+                 && towers[i]->getRotateReady()
+                 && mouseLeftPressed
+                 && manualMod){
+            towers[i]->fireCool();
+            //qDebug()<<"angel"<<towers[i]->getAngle();
+            qDebug()<<"x:"<<Tool::angel_to_vector(towers[i]->getAngle()).x()<<endl;
+            Bullet* b = new Bullet(towers[i], Tool::angel_to_vector(towers[i]->getAngle()));
+            bullets.push_back(b);
         }
     }
 }
@@ -234,13 +260,25 @@ void Scene::processor_damageConfirm(){
 void Scene::processor_Tower_rotate(){
     int i;
     for(i = 0; i < towers.size(); i++){
-        if(!towers[i]->hatred.isEmpty()){
-            MyPoint vec_aim;
-            MyPoint aim(towers[i]->hatred[0]->getPosition());
+        MyPoint vec_aim;
+        double angle_aim;
+        MyPoint aim;
+        if(!towers[i]->hatred.isEmpty() && !towers[i]->getIsChosen()){
+            aim = (towers[i]->hatred[0]->getPosition());
             MyPoint pole(towers[i]->getPosition());
             vec_aim.setX(aim.x()-pole.x());
             vec_aim.setY(aim.y()-pole.y());
-            double angle_aim = Tool::vector_to_angle(vec_aim);
+            angle_aim = Tool::vector_to_angle(vec_aim);
+        }else if(towers[i]->getIsChosen() && manualMod){
+            aim.setX(this->mouseMoveEventPoint.x());
+            aim.setY(this->mouseMoveEventPoint.y());
+        }
+        MyPoint pole(towers[i]->getPosition());
+        vec_aim.setX(aim.x()-pole.x());
+        vec_aim.setY(aim.y()-pole.y());
+        angle_aim = Tool::vector_to_angle(vec_aim);
+        if((!towers[i]->hatred.isEmpty() && !towers[i]->getIsChosen())
+                || towers[i]->getIsChosen()){
             if(abs(angle_aim - towers[i]->getAngle()) > towers[i]->get_velocity_rotaion()/FPS
                     &&abs(angle_aim - towers[i]->getAngle()) - 360 < -towers[i]->get_velocity_rotaion()/FPS){
                 //缓慢旋转中
@@ -248,12 +286,16 @@ void Scene::processor_Tower_rotate(){
                         towers[i]->setAngle(towers[i]->getAngle()
                                     + Tool::sign(angle_aim - towers[i]->getAngle())//这是一个符号函数，算方向的
                                     * towers[i]->get_velocity_rotaion()/FPS);
-                        towers[i]->setRotateReady(false);
+                        if(!towers[i]->getIsChosen()){
+                            towers[i]->setRotateReady(false);
+                        }
                 }else{
                         towers[i]->setAngle(towers[i]->getAngle()
                                     - Tool::sign(angle_aim - towers[i]->getAngle())//这是一个符号函数，算方向的
                                     * towers[i]->get_velocity_rotaion()/FPS);
-                        towers[i]->setRotateReady(false);
+                        if(!towers[i]->getIsChosen()){
+                            towers[i]->setRotateReady(false);
+                        }
 
                 }
 

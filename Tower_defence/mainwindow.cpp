@@ -53,6 +53,9 @@ void MainWindow::mousePressEvent(QMouseEvent* e){
 void MainWindow::mouseMoveEvent(QMouseEvent* e){
     world.processor_mouseMoveEvent(e);
 }
+void MainWindow::mouseReleaseEvent(QMouseEvent *e){
+    world.processor_mouseReleseEvent(e);
+}
 
 
 

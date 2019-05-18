@@ -36,6 +36,7 @@ public:
     void processor_mouseMoveEvent(QMouseEvent* e);//处理鼠标移动的
     void processor_mousePressEvent(QMouseEvent* e);//处理鼠标点击的
     void processor_keyPressEvent(QKeyEvent* e);
+    void processor_mouseReleseEvent(QMouseEvent* e);
 
     void processor_hatredControll();//管理仇恨列表
     void creator_bullets();//子弹生成器
@@ -56,6 +57,9 @@ private:
     QPixmap* background;//背景
     Player *player;
     double secondCounter;
+    bool manualMod;//可以手动控制
+    MyPoint mouseMoveEventPoint;
+    bool mouseLeftPressed;
 private slots:
     void enemy_generator();//敌人生成器
 };

@@ -18,6 +18,7 @@ public:
     ~Tower();
     void setActivated(bool set){this->isActivated = set;}//同样感觉用不上，最后可以删了
     void setChosen(bool set){this->isChosen = set;}//鸡肋冗余
+    bool getIsChosen(){return isChosen;}
     int getDamage() const{return damage;}
     int get_discovery_range() const{return discoveryRange;}
     void handleCoolDown();//此功能可以移交Scene也可以不移交，不涉及对象之间交互的都可以放到类里面
