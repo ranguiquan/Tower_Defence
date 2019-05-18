@@ -5,7 +5,7 @@
 Enemy::Enemy()
 {
     this->icon = new QPixmap;
-    this->icon->load(":/pictures/enemy_test.png");
+    this->icon->load(":/pictures/enemy/enemy1.png");
     this->position.setX(100);
     this->position.setY(500);
     direction_x = 1;

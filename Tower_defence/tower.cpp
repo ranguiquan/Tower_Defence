@@ -9,8 +9,7 @@ Tower::Tower(string name, bool isInstanlized)
     if(!isInstanlized){
         if(name.compare("attacker") == 0){
             this->damage = ATTACKER_DAMAGE;
-            this->icon = new QPixmap;
-            icon->load(":/pictures/tower_test.png");
+            icon->load(":/pictures/tower/tower1.png");
             width = ATTACKER_WIDTH;
             height = ATTACKER_HEIGHT;
             discoveryRange = ATTACKER_DISCOVERY;
@@ -32,7 +31,7 @@ Tower::Tower(string name, bool isInstanlized)
 }
 Tower::~Tower(){
     qDebug()<<"delete Tower\n";
-    //delete icon;
+    delete icon;
     qDebug()<<"Tower deleted\n";
 }
 void Tower::handleCoolDown(){

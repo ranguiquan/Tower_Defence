@@ -1,9 +1,22 @@
 <RCC>
-    <qresource prefix="/pictures">
-        <file>backGround2.png</file>
-        <file>tower_test.png</file>
-        <file>enemy_test.png</file>
-        <file>bullet_test.png</file>
-        <file>enemy3.jpg</file>
+    <qresource prefix="/pictures"/>
+    <qresource prefix="/">
+        <file>pictures/bullet/bullet1.png</file>
+        <file>pictures/bullet/bullet2.png</file>
+        <file>pictures/enemy/enemy1.png</file>
+        <file>pictures/enemy/enemy2.png</file>
+        <file>pictures/enemy/enemy3.png</file>
+        <file>pictures/enemy/enemy4.png</file>
+        <file>pictures/enemy/enemy5.png</file>
+        <file>pictures/enemy/enemy6.png</file>
+        <file>pictures/enemy/enemy7.png</file>
+        <file>pictures/enemy/enemy8.png</file>
+        <file>pictures/enemy/enemy9.png</file>
+        <file>pictures/enemy/enemy10.png</file>
+        <file>pictures/tower/tower1.png</file>
+        <file>pictures/tower/tower2.png</file>
+        <file>pictures/tower/tower3.png</file>
+        <file>pictures/tower/tower4.png</file>
+        <file>pictures/background/backGround2.png</file>
     </qresource>
 </RCC>

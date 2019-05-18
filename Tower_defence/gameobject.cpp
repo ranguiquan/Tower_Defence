@@ -1,6 +1,6 @@
 #include "gameobject.h"
 #include <math.h>
-GameObject::GameObject()
+GameObject::GameObject(): icon()
 {
     icon = new QPixmap;
     icon->load(":/pictures/tower_test.png");
@@ -9,7 +9,7 @@ GameObject::GameObject()
     height = 100;
 }
 GameObject::~GameObject(){
-    delete icon;
+    //delete icon;
 }
 void GameObject::setGameObject(double x, double y){
 

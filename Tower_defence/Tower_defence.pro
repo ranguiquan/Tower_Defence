@@ -34,8 +34,16 @@ SOURCES += \
     bullet.cpp \
     mypoint.cpp \
     tool.cpp \
+    player.cpp \
     enemy1.cpp \
-    player.cpp
+    enemy2.cpp \
+    enemy3.cpp \
+    enemy4.cpp \
+    enemy5.cpp \
+    enemy6.cpp \
+    enemy7.cpp \
+    enemy8.cpp \
+    enemy9.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,8 +55,16 @@ HEADERS += \
     bullet.h \
     mypoint.h \
     tool.h \
+    player.h \
     enemy1.h \
-    player.h
+    enemy2.h \
+    enemy3.h \
+    enemy4.h \
+    enemy5.h \
+    enemy6.h \
+    enemy7.h \
+    enemy8.h \
+    enemy9.h
 
 FORMS += \
         mainwindow.ui \

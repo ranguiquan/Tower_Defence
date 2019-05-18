@@ -8,7 +8,7 @@ class Enemy: public GameObject
 {
 public:
     explicit Enemy();
-    ~Enemy(){}
+    ~Enemy(){delete icon;}
     int get_velocity()const{return velocity;}
     double get_direction_x()const{return direction_x;}
     double get_direction_y()const{return direction_y;}

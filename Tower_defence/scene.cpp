@@ -13,9 +13,12 @@ Scene::Scene()
     Tower* displayedTower = new Tower("attacker", false);
     displayedTower->setGameObject(ATTACKER_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
+    displayedTower=new Tower("attacker1", false);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER1_HEIGHT/2);
+    displayMenuOfTowers.push_back(displayedTower);
 
     background = new QPixmap;
-    background->load(":/pictures/backGround2.png");
+    background->load(":/pictures/background/backGround2.png");
     player = new Player;
     secondCounter = 0.0;
 
@@ -36,47 +39,63 @@ void Scene::show(QPainter* p){
     secondCounter += 1.0/FPS;
     //画背景
     //player->show(p);
+    //qDebug()<<"p->drawPixmap"<<endl;
     p->drawPixmap(0,0/*MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT*/,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
 
     //仇恨管理一定要在开火管理之前，否则会导致bug
+    //qDebug()<<"processor_hatredControll()"<<endl;
     processor_hatredControll();
 
     //处理塔的开火状态
+    //qDebug()<<"towers[i]->handleCoolDown()"<<endl;
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
     }
+    //qDebug()<<"processor_Tower_rotate()"<<endl;
     processor_Tower_rotate();
     //必须要先处理冷却，再处理旋转，因为冷却函数把所有已冷却的塔设置成可开火
     //塔旋转处理器把未旋转到位、以冷却的塔设置成不可开火
 
+    //qDebug()<<"processor_Move()"<<endl;
     processor_Move();
+    //qDebug()<<"creator_bullets()"<<endl;
     creator_bullets();
+    //qDebug()<<"processor_damageConfirm()"<<endl;
     processor_damageConfirm();
+    //qDebug()<<"enemy_generator()"<<endl;
     if(((secondCounter - int(secondCounter/5)*5) >= 0.0) && ((secondCounter - int(secondCounter/5)*5) < 1.0/FPS)){
 
          enemy_generator();
     }
+    //qDebug()<<"object_delete()"<<endl;
     object_delete();
 
 
+
+    //qDebug()<<"towers[i]->handleCoolDown()"<<endl;
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
     }
 
+    //qDebug()<<"towers[i]->show(p)"<<endl;
     for(i = 0; i < towers.size(); i++){
         towers[i]->show(p);
     }
+
+
+    //qDebug()<<"displayMenuOfTowers[i]->show(p)"<<endl;
     for(i = 0; i < displayMenuOfTowers.size(); i++){
         displayMenuOfTowers[i]->show(p);
     }
+    //qDebug()<<"dragedTower[i]->show(p)"<<endl;
     for(i = 0; i < dragedTower.size(); i++){
         dragedTower[i]->show(p);
     }
+    //qDebug()<<"enemies[i]->show(p)"<<endl;
     for(i = 0; i < enemies.size(); i++){
-        if(enemies[i]->getLife() > 0){
-            enemies[i]->show(p);
-        }
+        enemies[i]->show(p);
     }
+    //qDebug()<<"bullets[i]->show(p)"<<endl;
     for(i = 0; i < bullets.size(); i++){
         bullets[i]->show(p);
     }
@@ -251,36 +270,108 @@ void Scene::processor_Tower_rotate(){
 void Scene::enemy_generator()
 {
     int a,b;
-    a=qrand()%7;//设置生成的敌人种类，种类数为7
-
-    b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过3
+    Enemy* tmp;
+    b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过7
     for(int i=0;i<b;i++)
     {
-        Enemy* tmp = new Enemy();
+        a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
+        qDebug()<<"疑点2+"<<endl;
+        switch (a)
+        {
+        /*case 1:
+        case 2:
+        case 3:
+        case 4:tmp = new Enemy();break;
+        case 5:
+        case 6:
+        case 7:
+        case 8:tmp = new Enemy1();break;
+        case 9:
+        case 10:
+        case 11:tmp = new Enemy2();break;
+        case 12:
+        case 13:
+        case 14:tmp = new Enemy3();break;
+        case 15:
+        case 16:
+        case 17:tmp = new Enemy4();break;
+        case 18:
+        case 19:tmp = new Enemy5();break;
+        case 20:
+        case 21:tmp = new Enemy6();break;
+        case 23:
+        case 24:tmp = new Enemy7();break;
+        case 25:
+        case 26:tmp = new Enemy8();break;
+        case 27:tmp = new Enemy9();break;*/
+        case 0:
+            tmp = new Enemy();
+            break;
+        case 1:
+        tmp = new Enemy1();
+        break;
+        case 2:
+        tmp = new Enemy2();
+        break;
+        case 3:
+        tmp = new Enemy3();
+        break;
+        case 4:
+        tmp = new Enemy4();
+        break;
+        case 5:
+        tmp = new Enemy5();
+        break;
+        case 6:
+        tmp = new Enemy6();
+        break;
+        case 7:
+        tmp = new Enemy7();
+        break;
+        case 8:
+        tmp = new Enemy8();
+        break;
+        case 9:
+            tmp = new Enemy9();
+            break;
+        }
+        qDebug()<<"疑点2-"<<endl;
+
         tmp->setGameObject(0,100+i*100);
         enemies.push_back(tmp);
+
+        qDebug()<<"疑点2--"<<endl;
     }
-}//未完成，随机生成种类不同敌人部分待补充
+}
 
 void Scene::object_delete()
 {
     for(int i = 0; i < enemies.size(); i++)
     {
+
         if(((enemies[i])->getLife())<=0)
         {
+
+            qDebug()<<"删除死亡敌人"<<endl;
             for(int j = 0; j < towers.size(); j++){
                 int index = towers[j]->hatred.indexOf(enemies[i]);
                 if(index != -1){
                     towers[j]->hatred.erase(towers[j]->hatred.begin() + index);
                 }
             }
+            qDebug()<<"疑点1+"<<endl;
+            qDebug()<<"enemies.size():"<<enemies.size()<<endl;
+            qDebug()<<"i:"<<i<<endl;
             delete enemies[i];
+            qDebug()<<"enemy deleted\n";
             enemies.erase(enemies.begin() + i);
+            qDebug()<<"疑点1-"<<endl;
             i--;
-            if(i < 0){break;}
+            if(i < 0){continue;}
         }
         if(((enemies[i])->getPosition_x())>=(MAINWINDOW_WIDTH-ENEMY_1_WIDTH/2))
         {
+            qDebug()<<"删除出界敌人"<<endl;
             for(int j = 0; j < towers.size(); j++){
                 int index = towers[j]->hatred.indexOf(enemies[i]);
                 if(index != -1){
@@ -291,7 +382,7 @@ void Scene::object_delete()
             delete enemies[i];
             enemies.erase(enemies.begin() + i);
             i--;
-            if(i < 0){break;}
+            if(i < 0){continue;}
         }
     }
 
@@ -300,6 +391,7 @@ void Scene::object_delete()
                 || bullets[i]->getPosition_x() > MAINWINDOW_WIDTH
                 || bullets[i]->getPosition_y() < 0
                 || bullets[i]->getPosition_y() > MAINWINDOW_HEIGHT){
+            //qDebug()<<"删除子弹"<<endl;
             delete bullets[i];
             bullets.erase(bullets.begin() + i);
             i--;
