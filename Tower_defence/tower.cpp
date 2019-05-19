@@ -22,8 +22,54 @@ Tower::Tower(string name, bool isInstanlized)
             velocity_rotation = ATTACKER_VELOCITY_ROTATION;
             angle = 180;
 
-        }else{
+        }
+        else if(name.compare("attacker1") == 0)
+        {
+            this->damage = ATTACKER1_DAMAGE;
+            icon->load(":/pictures/tower/tower2.png");
+            width = ATTACKER1_WIDTH;
+            height = ATTACKER1_HEIGHT;
+            discoveryRange = ATTACKER1_DISCOVERY;
 
+            isActivated = false;
+            isChosen = false;
+            fireReady = false;
+            fireInterval = ATTACKER1_FIRE_INTERVAL;
+            coolDown = ATTACKER1_FIRE_INTERVAL;
+            velocity_rotation = ATTACKER1_VELOCITY_ROTATION;
+            angle = 180;
+        }
+        else if(name.compare("attacker2") == 0)
+        {
+            this->damage = ATTACKER1_DAMAGE;
+            icon->load(":/pictures/tower/tower3.png");
+            width = ATTACKER2_WIDTH;
+            height = ATTACKER2_HEIGHT;
+            discoveryRange = ATTACKER2_DISCOVERY;
+
+            isActivated = false;
+            isChosen = false;
+            fireReady = false;
+            fireInterval = ATTACKER2_FIRE_INTERVAL;
+            coolDown = ATTACKER2_FIRE_INTERVAL;
+            velocity_rotation = ATTACKER2_VELOCITY_ROTATION;
+            angle = 180;
+        }
+        else if(name.compare("attacker3") == 0)
+        {
+            this->damage = ATTACKER3_DAMAGE;
+            icon->load(":/pictures/tower/tower4.png");
+            width = ATTACKER3_WIDTH;
+            height = ATTACKER3_HEIGHT;
+            discoveryRange = ATTACKER3_DISCOVERY;
+
+            isActivated = false;
+            isChosen = false;
+            fireReady = false;
+            fireInterval = ATTACKER3_FIRE_INTERVAL;
+            coolDown = ATTACKER3_FIRE_INTERVAL;
+            velocity_rotation = ATTACKER3_VELOCITY_ROTATION;
+            angle = 180;
         }
     }else{
 

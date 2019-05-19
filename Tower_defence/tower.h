@@ -4,7 +4,6 @@
 #include "enemy.h"
 #include <QPainter>
 #include <vector>
-#include <string>
 #include <QMouseEvent>
 #include <QVector>
 
@@ -40,7 +39,6 @@ public:
 
 private:
     int damage;
-
     bool isActivated;//冗余
     bool isChosen;//冗余
     int discoveryRange;//侦测范围
