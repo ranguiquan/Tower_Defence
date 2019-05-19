@@ -51,6 +51,7 @@ void MainWindow::mousePressEvent(QMouseEvent* e){
     world.processor_mousePressEvent(e);
 }
 void MainWindow::mouseMoveEvent(QMouseEvent* e){
+    //qDebug()<<"used:"<<count++<<endl;
     world.processor_mouseMoveEvent(e);
 }
 void MainWindow::mouseReleaseEvent(QMouseEvent *e){

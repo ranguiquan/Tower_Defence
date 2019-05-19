@@ -103,7 +103,6 @@ void Scene::show(QPainter* p){
 void Scene::processor_mousePressEvent(QMouseEvent *e){
     int i;
     if(e->button() == Qt::LeftButton && manualMod == false){
-        qDebug()<<"geting in\n";
         for(i = 0; i < towers.size(); i++){
             if(towers[i]->isMouseEventInIt(e)){
                 towers[i]->setChosen(true);
@@ -162,17 +161,16 @@ void Scene::processor_mouseMoveEvent(QMouseEvent *e){
 }
 void Scene::processor_keyPressEvent(QKeyEvent *e){
     if(e->key()==Qt::Key_0){
-        qDebug()<<"delete\n";
-        delete enemies[0];
-        qDebug()<<"after delete\n";
+        delete towers[0];
+        towers.erase(towers.begin()+towers.size());
     }
 }
 
 
-double Scene::distance(MyPoint a, MyPoint b){
-    double x = pow(a.x()-b.x(),2);
-    double y = pow(a.y()-b.y(),2);
-    double ans = pow(x+y,0.5);
+float Scene::distance(MyPoint a, MyPoint b){
+    float x = pow(a.x()-b.x(),2);
+    float y = pow(a.y()-b.y(),2);
+    float ans = pow(x+y,0.5);
     return ans;
 }
 
@@ -181,7 +179,7 @@ void Scene::processor_hatredControll(){
     int i,j;
     for(i = 0; i < towers.size(); i++){
         for(j = 0; j < enemies.size(); j++){
-            double dis = distance(towers[i]->getPosition(), enemies[j]->getPosition());
+            float dis = distance(towers[i]->getPosition(), enemies[j]->getPosition());
             int index = towers[i]->hatred.indexOf(enemies[j]);
             if(dis<= towers[i]->get_discovery_range()
                     && index==-1 && enemies[j]->getLife() > 0){
@@ -216,7 +214,6 @@ void Scene::creator_bullets()
                  && manualMod){
             towers[i]->fireCool();
             //qDebug()<<"angel"<<towers[i]->getAngle();
-            qDebug()<<"x:"<<Tool::angel_to_vector(towers[i]->getAngle()).x()<<endl;
             Bullet* b = new Bullet(towers[i], Tool::angel_to_vector(towers[i]->getAngle()));
             bullets.push_back(b);
         }
@@ -226,17 +223,17 @@ void Scene::creator_bullets()
 void Scene::processor_Move(){
     int i;
     for(i = 0; i < enemies.size(); i++){
-        double xPre = enemies[i]->getPosition().x();
-        double yPre = enemies[i]->getPosition().y();
-        double x = xPre + enemies[i]->get_velocity()*enemies[i]->get_direction_x()/FPS;
-        double y = yPre + enemies[i]->get_velocity()*enemies[i]->get_direction_y()/FPS;
+        float xPre = enemies[i]->getPosition().x();
+        float yPre = enemies[i]->getPosition().y();
+        float x = xPre + enemies[i]->get_velocity()*enemies[i]->get_direction_x()/FPS;
+        float y = yPre + enemies[i]->get_velocity()*enemies[i]->get_direction_y()/FPS;
         enemies[i]->setGameObject(x, y);
     }
     for(i = 0; i < bullets.size(); i++){
-        double xPre = bullets[i]->getPosition().x();
-        double yPre = bullets[i]->getPosition().y();
-        double x = xPre + bullets[i]->get_velocity()*bullets[i]->get_direction_x()/FPS;
-        double y = yPre + bullets[i]->get_velocity()*bullets[i]->get_direction_y()/FPS;
+        float xPre = bullets[i]->getPosition().x();
+        float yPre = bullets[i]->getPosition().y();
+        float x = xPre + bullets[i]->get_velocity()*bullets[i]->get_direction_x()/FPS;
+        float y = yPre + bullets[i]->get_velocity()*bullets[i]->get_direction_y()/FPS;
         bullets[i]->setGameObject(x, y);
     }
 
@@ -261,7 +258,7 @@ void Scene::processor_Tower_rotate(){
     int i;
     for(i = 0; i < towers.size(); i++){
         MyPoint vec_aim;
-        double angle_aim;
+        float angle_aim;
         MyPoint aim;
         if(!towers[i]->hatred.isEmpty() && !towers[i]->getIsChosen()){
             aim = (towers[i]->hatred[0]->getPosition());
@@ -317,7 +314,6 @@ void Scene::enemy_generator()
     for(int i=0;i<b;i++)
     {
         a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
-        qDebug()<<"疑点2+"<<endl;
         switch (a)
         {
         /*case 1:
@@ -377,12 +373,10 @@ void Scene::enemy_generator()
             tmp = new Enemy9();
             break;
         }
-        qDebug()<<"疑点2-"<<endl;
 
         tmp->setGameObject(0,100+i*100);
         enemies.push_back(tmp);
 
-        qDebug()<<"疑点2--"<<endl;
     }
 }
 
@@ -394,26 +388,19 @@ void Scene::object_delete()
         if(((enemies[i])->getLife())<=0)
         {
 
-            qDebug()<<"删除死亡敌人"<<endl;
             for(int j = 0; j < towers.size(); j++){
                 int index = towers[j]->hatred.indexOf(enemies[i]);
                 if(index != -1){
                     towers[j]->hatred.erase(towers[j]->hatred.begin() + index);
                 }
             }
-            qDebug()<<"疑点1+"<<endl;
-            qDebug()<<"enemies.size():"<<enemies.size()<<endl;
-            qDebug()<<"i:"<<i<<endl;
             delete enemies[i];
-            qDebug()<<"enemy deleted\n";
             enemies.erase(enemies.begin() + i);
-            qDebug()<<"疑点1-"<<endl;
             i--;
             if(i < 0){continue;}
         }
         if(((enemies[i])->getPosition_x())>=(MAINWINDOW_WIDTH-ENEMY_1_WIDTH/2))
         {
-            qDebug()<<"删除出界敌人"<<endl;
             for(int j = 0; j < towers.size(); j++){
                 int index = towers[j]->hatred.indexOf(enemies[i]);
                 if(index != -1){

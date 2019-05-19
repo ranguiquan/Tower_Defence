@@ -8,18 +8,18 @@ class MyPoint
 {
 public:
     MyPoint();
-    MyPoint(double x, double y);
+    MyPoint(float x, float y);
     MyPoint(const MyPoint& p);
     MyPoint(QMouseEvent* e);
     void setByMouseEvent(QMouseEvent* e);
-    void setX(double x){this->_x = x;}
-    void setY(double y){this->_y = y;}
-    double x()const{return this->_x;}
-    double y()const{return this->_y;}
+    void setX(float x){this->_x = x;}
+    void setY(float y){this->_y = y;}
+    float x()const{return this->_x;}
+    float y()const{return this->_y;}
 
 private:
-    double _x;
-    double _y;
+    float _x;
+    float _y;
 };
 
 #endif // MYPOINT_H

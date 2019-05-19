@@ -4,7 +4,7 @@ MyPoint::MyPoint()
 {
     _x = 0, _y = 0;
 }
-MyPoint::MyPoint(double x, double y){
+MyPoint::MyPoint(float x, float y){
     _x = x, _y = y;
 }
 MyPoint::MyPoint(const MyPoint& p){

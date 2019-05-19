@@ -11,7 +11,7 @@ GameObject::GameObject(): icon()
 GameObject::~GameObject(){
     //delete icon;
 }
-void GameObject::setGameObject(double x, double y){
+void GameObject::setGameObject(float x, float y){
 
     position.setX(x);
     position.setY(y);

@@ -11,10 +11,10 @@ class GameObject
 public:
     explicit GameObject();
     ~GameObject();
-    void setGameObject(double x, double y);//设定中心坐标
+    void setGameObject(float x, float y);//设定中心坐标
     MyPoint getPosition(){return position;}
-    double getPosition_x(){return getPosition().x();}
-    double getPosition_y(){return getPosition().y();}
+    float getPosition_x(){return getPosition().x();}
+    float getPosition_y(){return getPosition().y();}
     int getWidth(){return width;}
     void show(QPainter* p);
     bool isMouseEventInIt(QMouseEvent* e);//检测鼠标事件是否点中该对象

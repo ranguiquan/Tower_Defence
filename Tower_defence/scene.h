@@ -46,7 +46,7 @@ public:
     void object_delete();//对象出界删除，删除到达终点或失去生命的敌人，删除生命为0的炮塔，删除死亡的主角
 
 
-    static double distance(MyPoint a, MyPoint b);//返回两点间距离，不应该放在这，懒得改了，乐意改的话可以优化一下
+    static float distance(MyPoint a, MyPoint b);//返回两点间距离，不应该放在这，懒得改了，乐意改的话可以优化一下
 
 private:
     QVector<Tower*> towers;//防御塔列表（已激活）
@@ -56,7 +56,7 @@ private:
     QVector<Bullet*> bullets;//子弹容器
     QPixmap* background;//背景
     Player *player;
-    double secondCounter;
+    float secondCounter;
     bool manualMod;//可以手动控制
     MyPoint mouseMoveEventPoint;
     bool mouseLeftPressed;

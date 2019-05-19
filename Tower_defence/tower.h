@@ -31,9 +31,9 @@ public:
     void setIsFireReady(bool re){fireReady = re;}
     QVector<Enemy*> hatred;//仇恨列表，为了方便Scene管理，放到public了
     void show(QPainter* p);
-    double getAngle()const{return angle;}
-    void setAngle(double r){angle = r;}
-    double get_velocity_rotaion()const{return velocity_rotation;}
+    float getAngle()const{return angle;}
+    void setAngle(float r){angle = r;}
+    float get_velocity_rotaion()const{return velocity_rotation;}
     bool getRotateReady()const{return rotateReady;}
     void setRotateReady(bool i){rotateReady = i;}
 
@@ -46,10 +46,10 @@ private:
     int discoveryRange;//侦测范围
     bool rotateReady;
     bool fireReady;
-    double fireInterval;//开火时间间隔
-    double coolDown;//冷却倒计时
-    double angle;//炮管∠
-    double velocity_rotation;//炮台转速
+    float fireInterval;//开火时间间隔
+    float coolDown;//冷却倒计时
+    float angle;//炮管∠
+    float velocity_rotation;//炮台转速
 };
 
 #endif // TOWER_H
