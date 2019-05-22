@@ -8,18 +8,10 @@
 #include "tower.h"
 #include "tower.h"
 #include "enemy.h"
-#include "enemy1.h"
-#include "enemy2.h"
-#include "enemy3.h"
-#include "enemy4.h"
-#include "enemy5.h"
-#include "enemy6.h"
-#include "enemy7.h"
-#include "enemy8.h"
-#include "enemy9.h"
 #include "bullet.h"
 #include "player.h"
 #include <QTime>
+#include <QDialog>
 
 class Scene: public QObject
 {
@@ -46,7 +38,12 @@ public:
     void object_delete();//对象出界删除，删除到达终点或失去生命的敌人，删除生命为0的炮塔，删除死亡的主角
 
 
+
     static float distance(MyPoint a, MyPoint b);//返回两点间距离，不应该放在这，懒得改了，乐意改的话可以优化一下
+
+    void life_show(QMouseEvent* e);//显示敌人血条
+    void enemy_generator();//敌人生成器
+
 
 private:
     QVector<Tower*> towers;//防御塔列表（已激活）
@@ -60,8 +57,8 @@ private:
     bool manualMod;//可以手动控制
     MyPoint mouseMoveEventPoint;
     bool mouseLeftPressed;
-private slots:
-    void enemy_generator();//敌人生成器
+
+
 };
 
 #endif // SCENE_H

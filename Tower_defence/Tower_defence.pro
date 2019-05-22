@@ -30,20 +30,11 @@ SOURCES += \
     scene.cpp \
     gameobject.cpp \
     tower.cpp \
-    enemy.cpp \
     bullet.cpp \
     mypoint.cpp \
     tool.cpp \
     player.cpp \
-    enemy1.cpp \
-    enemy2.cpp \
-    enemy3.cpp \
-    enemy4.cpp \
-    enemy5.cpp \
-    enemy6.cpp \
-    enemy7.cpp \
-    enemy8.cpp \
-    enemy9.cpp
+    enemy.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,20 +42,11 @@ HEADERS += \
     config.h \
     gameobject.h \
     tower.h \
-    enemy.h \
     bullet.h \
     mypoint.h \
     tool.h \
     player.h \
-    enemy1.h \
-    enemy2.h \
-    enemy3.h \
-    enemy4.h \
-    enemy5.h \
-    enemy6.h \
-    enemy7.h \
-    enemy8.h \
-    enemy9.h
+    enemy.h
 
 FORMS += \
         mainwindow.ui \

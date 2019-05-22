@@ -5,7 +5,9 @@
 #include <math.h>
 #include "tool.h"
 #include <QtGlobal>
-#include <QTime>
+#include <QLabel>
+#include <QWidget>
+#include <QProgressBar>
 #include <QTimer>
 
 Scene::Scene()
@@ -13,8 +15,17 @@ Scene::Scene()
     Tower* displayedTower = new Tower("attacker", false);
     displayedTower->setGameObject(ATTACKER_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
-    displayedTower=new Tower("attacker1", false);
+
+    displayedTower = new Tower("attacker1", false);
     displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER1_HEIGHT/2);
+    displayMenuOfTowers.push_back(displayedTower);
+
+    displayedTower = new Tower("attacker2", false);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER2_HEIGHT/2);
+    displayMenuOfTowers.push_back(displayedTower);
+
+    displayedTower = new Tower("attacker3", false);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER3_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
     background = new QPixmap;
@@ -246,9 +257,20 @@ void Scene::processor_damageConfirm(){
             if(enemies[i]->isMyPointInIt(bullets[j]->getPosition())){
                 enemies[i]->setLife(enemies[i]->getLife() - bullets[j]->getDamage());
                 delete bullets[j];
-
                 bullets.erase(bullets.begin()+j);
                 j--;
+                QTimer *timer = new QTimer(this);
+                QProgressBar *pProgressBar = new QProgressBar();
+                pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
+                pProgressBar->setMinimum(0);  // 最小值
+                pProgressBar->setMaximum(enemies[i]->getOriginalLife());  // 最大值为
+                pProgressBar->setValue(enemies[i]->getLife());  // 当前进度
+                pProgressBar->setWindowFlags(Qt::FramelessWindowHint);
+                pProgressBar->setAttribute(Qt::WA_DeleteOnClose);
+                pProgressBar->show();
+                pProgressBar->move(enemies[i]->getPosition_x(),enemies[i]->getPosition_y()-10);
+                connect(timer, SIGNAL(timeout()), pProgressBar, SLOT(close()));
+                timer->start(1000);
             }
         }
 
@@ -316,33 +338,33 @@ void Scene::enemy_generator()
         a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
         switch (a)
         {
-        /*case 1:
+        case 1:
         case 2:
         case 3:
-        case 4:tmp = new Enemy();break;
+        case 4:tmp = new Enemy("Enemy");break;
         case 5:
         case 6:
         case 7:
-        case 8:tmp = new Enemy1();break;
+        case 8:tmp = new Enemy("Enemy1");break;
         case 9:
         case 10:
-        case 11:tmp = new Enemy2();break;
+        case 11:tmp = new Enemy("Enemy2");break;
         case 12:
         case 13:
-        case 14:tmp = new Enemy3();break;
+        case 14:tmp = new Enemy("Enemy3");break;
         case 15:
         case 16:
-        case 17:tmp = new Enemy4();break;
+        case 17:tmp = new Enemy("Enemy4");break;
         case 18:
-        case 19:tmp = new Enemy5();break;
+        case 19:tmp = new Enemy("Enemy5");break;
         case 20:
-        case 21:tmp = new Enemy6();break;
+        case 21:tmp = new Enemy("Enemy6");break;
         case 23:
-        case 24:tmp = new Enemy7();break;
+        case 24:tmp = new Enemy("Enemy7");break;
         case 25:
-        case 26:tmp = new Enemy8();break;
-        case 27:tmp = new Enemy9();break;*/
-        case 0:
+        case 26:tmp = new Enemy("Enemy8");break;
+        case 0:tmp = new Enemy("Enemy9");break;
+        /*case 0:
             tmp = new Enemy();
             break;
         case 1:
@@ -370,8 +392,8 @@ void Scene::enemy_generator()
         tmp = new Enemy8();
         break;
         case 9:
-            tmp = new Enemy9();
-            break;
+        tmp = new Enemy9();
+        break;*/
         }
 
         tmp->setGameObject(0,100+i*100);
@@ -433,6 +455,24 @@ void Scene::object_delete()
     }
 }
 
-
-
-
+void Scene::life_show(QMouseEvent* e)
+{
+    int i;
+    if(e->button() == Qt::LeftButton){
+        for(i=0;i<enemies.size();i++)
+            if(enemies[i]->isMouseEventInIt(e)){
+                QTimer *timer = new QTimer(this);
+                QProgressBar *pProgressBar = new QProgressBar();
+                pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
+                pProgressBar->setMinimum(0);  // 最小值
+                pProgressBar->setMaximum(enemies[i]->getOriginalLife());  // 最大值为
+                pProgressBar->setValue(enemies[i]->getLife());  // 当前进度
+                pProgressBar->setWindowFlags(Qt::FramelessWindowHint);                
+                pProgressBar->setAttribute(Qt::WA_DeleteOnClose);
+                pProgressBar->show();
+                pProgressBar->move(enemies[i]->getPosition_x(),enemies[i]->getPosition_y()-10);
+                connect(timer, SIGNAL(timeout()), pProgressBar, SLOT(close()));
+                timer->start(1000);
+            }
+    }
+}
