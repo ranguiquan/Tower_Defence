@@ -49,7 +49,7 @@ void MainWindow::keyPressEvent(QKeyEvent* e){
 }
 void MainWindow::mousePressEvent(QMouseEvent* e){
     world.processor_mousePressEvent(e);
-    world.life_show(e);
+//    world.life_show(e);
 }
 void MainWindow::mouseMoveEvent(QMouseEvent* e){
     world.processor_mouseMoveEvent(e);

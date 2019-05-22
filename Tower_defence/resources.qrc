@@ -18,5 +18,7 @@
         <file>pictures/tower/tower3.png</file>
         <file>pictures/tower/tower4.png</file>
         <file>pictures/background/backGround2.png</file>
+        <file>pictures/enemy/radius_front.png</file>
+        <file>pictures/enemy/radius_back.png</file>
     </qresource>
 </RCC>

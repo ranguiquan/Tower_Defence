@@ -34,7 +34,8 @@ SOURCES += \
     mypoint.cpp \
     tool.cpp \
     player.cpp \
-    enemy.cpp
+    enemy.cpp \
+    blood.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     mypoint.h \
     tool.h \
     player.h \
-    enemy.h
+    enemy.h \
+    blood.h
 
 FORMS += \
         mainwindow.ui \
@@ -59,3 +61,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES +=

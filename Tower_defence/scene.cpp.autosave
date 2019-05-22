@@ -118,7 +118,7 @@ void Scene::show(QPainter* p){
         bloods[i]->show(p);
         //        bloods[i]->move(enemies[i]->getPosition_x(),enemies[i]->getPosition_y());
     }*/
-// 血条类的显示如果放在外面，也会超级无敌卡
+// 血条类的生成如果放在这里，debug看到生成了很多血条，且血条和敌人缺乏对应关系
     for(i=0;i<bloods.size();i++)
     {
         bloods[i]->show(p);
@@ -426,7 +426,7 @@ void Scene::enemy_generator()
         tmp->setGameObject(0,100+i*100);
         enemies.push_back(tmp);
         blood=new Blood(tmp);
-        bloods.push_back(blood);//试图把血条生成放在这里，但是发现会超级无敌卡
+        bloods.push_back(blood);//试图把血条生成放在这里，但是发现程序会无法
         qDebug()<<"血条生成"<<endl;
         qDebug()<<"疑点2--"<<endl;
     }
@@ -518,5 +518,5 @@ void Scene::life_show(QMouseEvent* e)
                 timer->start(1000);
             }
     }
-}
-*/
+}*/
+
