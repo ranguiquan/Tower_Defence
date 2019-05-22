@@ -76,34 +76,27 @@ void Scene::show(QPainter* p){
     processor_damageConfirm();
     //qDebug()<<"enemy_generator()"<<endl;
     if(((secondCounter - int(secondCounter/5)*5) >= 0.0) && ((secondCounter - int(secondCounter/5)*5) < 1.0/FPS)){
-
          enemy_generator();
     }
     //qDebug()<<"object_delete()"<<endl;
     object_delete();
-
-
-    //qDebug()<<"towers[i]->handleCoolDown()"<<endl;
-    for(i = 0; i < towers.size(); i++){
-        towers[i]->handleCoolDown();
-    }
 
     //qDebug()<<"towers[i]->show(p)"<<endl;
     for(i = 0; i < towers.size(); i++){
         towers[i]->show(p);
     }
 
-
     //qDebug()<<"displayMenuOfTowers[i]->show(p)"<<endl;
     for(i = 0; i < displayMenuOfTowers.size(); i++){
         displayMenuOfTowers[i]->show(p);
     }
+
     //qDebug()<<"dragedTower[i]->show(p)"<<endl;
     for(i = 0; i < dragedTower.size(); i++){
         dragedTower[i]->show(p);
     }
-    //qDebug()<<"enemies[i]->show(p)"<<endl;
 
+    //qDebug()<<"enemies[i]->show(p)"<<endl;
     for(i = 0; i < enemies.size(); i++){
         enemies[i]->show(p);
     }
@@ -263,6 +256,7 @@ void Scene::processor_damageConfirm(){
     for(i = 0; i < enemies.size(); i++){
         for(j = 0; j < bullets.size(); j++){
             if(enemies[i]->isMyPointInIt(bullets[j]->getPosition())){
+                qDebug()<<"setDamaged: "<<this->secondCounter<<endl;
                 enemies[i]->setDamaged(true);
                 enemies[i]->setLife(enemies[i]->getLife() - bullets[j]->getDamage());
                 delete bullets[j];
@@ -346,8 +340,7 @@ void Scene::enemy_generator()
     for(int i=0;i<b;i++)
     {
         a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
-        tmp = new Enemy("Enemy");
-        /*switch (a)
+        switch (a)
         {
         case 1:
         case 2:
@@ -375,7 +368,7 @@ void Scene::enemy_generator()
         case 25:
         case 26:tmp = new Enemy("Enemy8");break;
         case 0:tmp = new Enemy("Enemy9");break;
-        }*/
+        }
 
         tmp->setGameObject(0,100+i*100);
         enemies.push_back(tmp);

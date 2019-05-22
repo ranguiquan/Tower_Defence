@@ -40,8 +40,8 @@ public:
 
 private:
     int damage;
-    bool isActivated;//冗余
-    bool isChosen;//冗余
+    bool isActivated;
+    bool isChosen;
     int discoveryRange;//侦测范围
     bool rotateReady;
     bool fireReady;

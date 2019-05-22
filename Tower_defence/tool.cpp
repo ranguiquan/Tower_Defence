@@ -1,6 +1,5 @@
 #include "tool.h"
 #include <math.h>
-#define _USE_MATH_DEFINES
 #include "config.h"
 
 Tool::Tool()

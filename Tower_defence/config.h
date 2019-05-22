@@ -9,7 +9,7 @@
 #define BACK_GROUND_WIDTH 990
 //注意，背景坐标和程序框坐标有差！
 
-#define FPS 144
+#define FPS 60
 //塔attacker数据
 #define ATTACKER_WIDTH 80
 #define ATTACKER_HEIGHT 40
