@@ -6,6 +6,7 @@
 #include <vector>
 #include <QMouseEvent>
 #include <QVector>
+#include <QString>
 
 
 using namespace std;
@@ -35,7 +36,7 @@ public:
     float get_velocity_rotaion()const{return velocity_rotation;}
     bool getRotateReady()const{return rotateReady;}
     void setRotateReady(bool i){rotateReady = i;}
-
+    string getType(){return type;}
 
 private:
     int damage;
@@ -48,6 +49,7 @@ private:
     float coolDown;//冷却倒计时
     float angle;//炮管∠
     float velocity_rotation;//炮台转速
+    string type;
 };
 
 #endif // TOWER_H

@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "player.h"
+#include "blood.h"
 #include <QTime>
 #include <QDialog>
 
@@ -51,6 +52,7 @@ private:
     QVector<Tower*> displayMenuOfTowers;//防御塔菜单（未激活的塔，不参与游戏）
     QVector<Tower*> dragedTower;//被鼠标拖动的塔
     QVector<Bullet*> bullets;//子弹容器
+    QVector<Blood*> bloods;
     QPixmap* background;//背景
     Player *player;
     float secondCounter;

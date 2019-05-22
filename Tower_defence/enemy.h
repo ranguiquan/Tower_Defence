@@ -17,14 +17,22 @@ public:
     int getLife(){return life;}
     void setLife(int l){life = l;}
     int getOriginalLife(){return originalLife;}
+    /*bool isChosen(){
+        QMouseEvent *e;
+        if(this->isMouseEventInIt(e)&&e->button() == Qt::LeftButton)
+            return true;
+        else return false;
+    }*/
+    void setDamaged(bool b){damage=b;}
+    bool getDamage(){return damage;}
 
 protected:
     int life;
     int originalLife;
     int velocity;
-    float direction_x;
-    float direction_y;
-
+    double direction_x;
+    double direction_y;
+    bool damage;
 };
 
 #endif // ENEMY_H

@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QProgressBar>
 #include <QTimer>
+#include "blood.h"
 
 Scene::Scene()
 {
@@ -82,7 +83,6 @@ void Scene::show(QPainter* p){
     object_delete();
 
 
-
     //qDebug()<<"towers[i]->handleCoolDown()"<<endl;
     for(i = 0; i < towers.size(); i++){
         towers[i]->handleCoolDown();
@@ -103,9 +103,17 @@ void Scene::show(QPainter* p){
         dragedTower[i]->show(p);
     }
     //qDebug()<<"enemies[i]->show(p)"<<endl;
+
     for(i = 0; i < enemies.size(); i++){
         enemies[i]->show(p);
     }
+// 血条类的显示如果放在外面，也会超级无敌卡
+    //qDebug()<<"bloods[i]->show(p)"<<endl;
+    for(i=0;i<bloods.size();i++)
+    {
+        bloods[i]->show(p);
+    }
+
     //qDebug()<<"bullets[i]->show(p)"<<endl;
     for(i = 0; i < bullets.size(); i++){
         bullets[i]->show(p);
@@ -129,7 +137,7 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
                     delete dragedTower[j];
                 }
                 dragedTower.clear();
-                Tower* tmp = new Tower("attacker", false);
+                Tower* tmp = new Tower(displayMenuOfTowers[i]->getType(), false);
                 tmp->setGameObject(e->x(), e->y());
                 this->dragedTower.push_back(tmp);
                 return;
@@ -255,11 +263,12 @@ void Scene::processor_damageConfirm(){
     for(i = 0; i < enemies.size(); i++){
         for(j = 0; j < bullets.size(); j++){
             if(enemies[i]->isMyPointInIt(bullets[j]->getPosition())){
+                enemies[i]->setDamaged(true);
                 enemies[i]->setLife(enemies[i]->getLife() - bullets[j]->getDamage());
                 delete bullets[j];
                 bullets.erase(bullets.begin()+j);
                 j--;
-                QTimer *timer = new QTimer(this);
+/*                QTimer *timer = new QTimer(this);
                 QProgressBar *pProgressBar = new QProgressBar();
                 pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
                 pProgressBar->setMinimum(0);  // 最小值
@@ -270,7 +279,7 @@ void Scene::processor_damageConfirm(){
                 pProgressBar->show();
                 pProgressBar->move(enemies[i]->getPosition_x(),enemies[i]->getPosition_y()-10);
                 connect(timer, SIGNAL(timeout()), pProgressBar, SLOT(close()));
-                timer->start(1000);
+                timer->start(1000);*/
             }
         }
 
@@ -332,11 +341,13 @@ void Scene::enemy_generator()
 {
     int a,b;
     Enemy* tmp;
+    Blood *blood;
     b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过7
     for(int i=0;i<b;i++)
     {
         a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
-        switch (a)
+        tmp = new Enemy("Enemy");
+        /*switch (a)
         {
         case 1:
         case 2:
@@ -364,41 +375,14 @@ void Scene::enemy_generator()
         case 25:
         case 26:tmp = new Enemy("Enemy8");break;
         case 0:tmp = new Enemy("Enemy9");break;
-        /*case 0:
-            tmp = new Enemy();
-            break;
-        case 1:
-        tmp = new Enemy1();
-        break;
-        case 2:
-        tmp = new Enemy2();
-        break;
-        case 3:
-        tmp = new Enemy3();
-        break;
-        case 4:
-        tmp = new Enemy4();
-        break;
-        case 5:
-        tmp = new Enemy5();
-        break;
-        case 6:
-        tmp = new Enemy6();
-        break;
-        case 7:
-        tmp = new Enemy7();
-        break;
-        case 8:
-        tmp = new Enemy8();
-        break;
-        case 9:
-        tmp = new Enemy9();
-        break;*/
-        }
+        }*/
 
         tmp->setGameObject(0,100+i*100);
         enemies.push_back(tmp);
 
+
+        blood=new Blood(tmp);
+        bloods.push_back(blood);//试图把血条生成放在这里，但是发现会超级无敌卡
     }
 }
 
@@ -417,7 +401,9 @@ void Scene::object_delete()
                 }
             }
             delete enemies[i];
+            delete bloods[i];
             enemies.erase(enemies.begin() + i);
+            bloods.erase(bloods.begin()+i);
             i--;
             if(i < 0){continue;}
         }
@@ -431,7 +417,9 @@ void Scene::object_delete()
             }
             player->setLife(player->getLife()-1);
             delete enemies[i];
+            delete bloods[i];
             enemies.erase(enemies.begin() + i);
+            bloods.erase(bloods.begin()+i);
             i--;
             if(i < 0){continue;}
         }
@@ -452,27 +440,5 @@ void Scene::object_delete()
     if(player->getLife()==0)
     {
        //游戏结束，失败
-    }
-}
-
-void Scene::life_show(QMouseEvent* e)
-{
-    int i;
-    if(e->button() == Qt::LeftButton){
-        for(i=0;i<enemies.size();i++)
-            if(enemies[i]->isMouseEventInIt(e)){
-                QTimer *timer = new QTimer(this);
-                QProgressBar *pProgressBar = new QProgressBar();
-                pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
-                pProgressBar->setMinimum(0);  // 最小值
-                pProgressBar->setMaximum(enemies[i]->getOriginalLife());  // 最大值为
-                pProgressBar->setValue(enemies[i]->getLife());  // 当前进度
-                pProgressBar->setWindowFlags(Qt::FramelessWindowHint);                
-                pProgressBar->setAttribute(Qt::WA_DeleteOnClose);
-                pProgressBar->show();
-                pProgressBar->move(enemies[i]->getPosition_x(),enemies[i]->getPosition_y()-10);
-                connect(timer, SIGNAL(timeout()), pProgressBar, SLOT(close()));
-                timer->start(1000);
-            }
     }
 }

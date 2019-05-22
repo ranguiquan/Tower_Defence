@@ -4,6 +4,7 @@
 
 Enemy::Enemy(string name)
 {
+    this->damage = false;
     if(name.compare("Enemy") == 0)
     {
         this->icon = new QPixmap;

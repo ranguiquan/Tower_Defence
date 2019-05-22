@@ -6,6 +6,7 @@
 Tower::Tower(string name, bool isInstanlized)
 //只有通过鼠标事件才能生成实例化的防御塔（尚不确定的想法）
 {
+    this->type = name;
     if(!isInstanlized){
         if(name.compare("attacker") == 0){
             this->damage = ATTACKER_DAMAGE;
