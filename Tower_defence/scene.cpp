@@ -29,6 +29,10 @@ Scene::Scene()
     displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER3_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
+    displayedTower = new Tower("attacker4", false);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH+ATTACKER4_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER4_HEIGHT/2);
+    displayMenuOfTowers.push_back(displayedTower);
+
     background = new QPixmap;
     background->load(":/pictures/background/backGround2.png");
     player = new Player;
@@ -100,7 +104,7 @@ void Scene::show(QPainter* p){
     for(i = 0; i < enemies.size(); i++){
         enemies[i]->show(p);
     }
-// 血条类的显示如果放在外面，也会超级无敌卡
+
     //qDebug()<<"bloods[i]->show(p)"<<endl;
     for(i=0;i<bloods.size();i++)
     {
@@ -140,9 +144,16 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
         for(j = 0; j < dragedTower.size(); j++){
             dragedTower[j]->setActivated(true);
             towers.push_back(dragedTower[j]);
-
         }
         dragedTower.clear();
+        int k=0;
+        for(k=0;k<enemies.size();k++)
+        {
+            if(enemies[k]->isMouseEventInIt(e))
+            {
+                enemies[k]->isChosen=1;
+            }
+        }
     }else if(e->button() == Qt::LeftButton && manualMod == true){
         this->mouseLeftPressed = true;
     }else if(e->button() == Qt::RightButton){
@@ -259,21 +270,12 @@ void Scene::processor_damageConfirm(){
                 qDebug()<<"setDamaged: "<<this->secondCounter<<endl;
                 enemies[i]->setDamaged(true);
                 enemies[i]->setLife(enemies[i]->getLife() - bullets[j]->getDamage());
+                if(enemies[i]->get_velocity()>0)
+                    enemies[i]->setVelocity(enemies[i]->get_velocity()-bullets[j]->getSlower());
+                else enemies[i]->setVelocity(0);
                 delete bullets[j];
                 bullets.erase(bullets.begin()+j);
                 j--;
-/*                QTimer *timer = new QTimer(this);
-                QProgressBar *pProgressBar = new QProgressBar();
-                pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
-                pProgressBar->setMinimum(0);  // 最小值
-                pProgressBar->setMaximum(enemies[i]->getOriginalLife());  // 最大值为
-                pProgressBar->setValue(enemies[i]->getLife());  // 当前进度
-                pProgressBar->setWindowFlags(Qt::FramelessWindowHint);
-                pProgressBar->setAttribute(Qt::WA_DeleteOnClose);
-                pProgressBar->show();
-                pProgressBar->move(enemies[i]->getPosition_x(),enemies[i]->getPosition_y()-10);
-                connect(timer, SIGNAL(timeout()), pProgressBar, SLOT(close()));
-                timer->start(1000);*/
             }
         }
 
@@ -375,7 +377,7 @@ void Scene::enemy_generator()
 
 
         blood=new Blood(tmp);
-        bloods.push_back(blood);//试图把血条生成放在这里，但是发现会超级无敌卡
+        bloods.push_back(blood);
     }
 }
 

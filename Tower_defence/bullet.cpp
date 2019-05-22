@@ -9,14 +9,51 @@
 Bullet::Bullet(Tower* parent, Enemy* target)
 {
     this->parent = parent;
-    this->damage = parent->getDamage();
-    this->icon = new QPixmap;
-    icon->load(":/pictures/bullet/bullet1.png");
-    this->width = BULLET_WIDTH;
-    this->height = BULLET_WIDTH;
-    this->velocity = BULLET_VELOCITY;
-
-
+    if((parent->getType()).compare("attacker") == 0){
+        this->slower=0;
+        this->damage = parent->getDamage();
+        this->icon = new QPixmap;
+        icon->load(":/pictures/bullet/bullet1.png");
+        this->width = BULLET_WIDTH;
+        this->height = BULLET_WIDTH;
+        this->velocity = BULLET_VELOCITY;
+    }
+    else if((parent->getType()).compare("attacker1") == 0){
+        this->slower=0;
+        this->damage = parent->getDamage();
+        this->icon = new QPixmap;
+        icon->load(":/pictures/bullet/bullet1.png");
+        this->width = BULLET1_WIDTH;
+        this->height = BULLET1_WIDTH;
+        this->velocity = BULLET1_VELOCITY;
+    }
+    if((parent->getType()).compare("attacker2") == 0){
+        this->slower=0;
+        this->damage = parent->getDamage();
+        this->icon = new QPixmap;
+        icon->load(":/pictures/bullet/bullet2.png");
+        this->width = BULLET2_WIDTH;
+        this->height = BULLET2_WIDTH;
+        this->velocity = BULLET2_VELOCITY;
+    }
+    if((parent->getType()).compare("attacker3") == 0){
+        this->slower=0;
+        this->damage = parent->getDamage();
+        this->icon = new QPixmap;
+        icon->load(":/pictures/bullet/bullet2.png");
+        this->width = BULLET3_WIDTH;
+        this->height = BULLET3_WIDTH;
+        this->velocity = BULLET3_VELOCITY;
+    }
+    if((parent->getType()).compare("attacker4") == 0){
+        this->slower=BULLET4_SLOWER;
+        this->damage = parent->getDamage();
+        this->icon = new QPixmap;
+        icon->load(":/pictures/bullet/bullet3.png");
+        this->width = BULLET4_WIDTH;
+        this->height = BULLET4_WIDTH;
+        this->velocity = BULLET4_VELOCITY;
+    }
     float dis = Scene::distance((parent->getPosition()), (target->getPosition()));
     float x = target->getPosition().x()-parent->getPosition().x();
     float y = target->getPosition().y()-parent->getPosition().y();

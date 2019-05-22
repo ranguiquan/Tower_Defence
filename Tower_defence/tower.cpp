@@ -72,6 +72,22 @@ Tower::Tower(string name, bool isInstanlized)
             velocity_rotation = ATTACKER3_VELOCITY_ROTATION;
             angle = 180;
         }
+        else if(name.compare("attacker4") == 0)
+        {
+            this->damage = ATTACKER4_DAMAGE;
+            icon->load(":/pictures/tower/tower5.png");
+            width = ATTACKER4_WIDTH;
+            height = ATTACKER4_HEIGHT;
+            discoveryRange = ATTACKER4_DISCOVERY;
+
+            isActivated = false;
+            isChosen = false;
+            fireReady = false;
+            fireInterval = ATTACKER4_FIRE_INTERVAL;
+            coolDown = ATTACKER4_FIRE_INTERVAL;
+            velocity_rotation = ATTACKER4_VELOCITY_ROTATION;
+            angle = 180;
+        }
     }else{
 
     }

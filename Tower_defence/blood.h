@@ -13,6 +13,16 @@ public:
     void show(QPainter *p);
 private:
     Enemy *parent;
+    QRect rect;
+    QRect textRect;
+    QFont f;
+    double k;
+    int x;
+    QRect fillRect;
+
+    QString valueStr;
+    QPixmap buttomMap;
+    QPixmap fillMap;
 };
 
 #endif // BLOOD_H

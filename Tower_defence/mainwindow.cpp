@@ -59,5 +59,3 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e){
     world.processor_mouseReleseEvent(e);
 }
 
-
-

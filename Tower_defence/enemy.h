@@ -16,15 +16,13 @@ public:
     float get_direction_y()const{return direction_y;}
     int getLife(){return life;}
     void setLife(int l){life = l;}
+    void setVelocity(int v){velocity=v;}
     int getOriginalLife(){return originalLife;}
-    /*bool isChosen(){
-        QMouseEvent *e;
-        if(this->isMouseEventInIt(e)&&e->button() == Qt::LeftButton)
-            return true;
-        else return false;
-    }*/
     void setDamaged(bool b){damage=b;}
     bool getDamage(){return damage;}
+    bool isChosen=0;
+public slots:
+    void setischosen(bool b){isChosen=b;}
 
 protected:
     int life;
