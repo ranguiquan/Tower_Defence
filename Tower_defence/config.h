@@ -4,9 +4,12 @@
 #define M_PI 3.14159265358979323846
 
 #define MAINWINDOW_HEIGHT 700
-#define MAINWINDOW_WIDTH 990
-#define BACK_GROUND_HEIGHT 690
-#define BACK_GROUND_WIDTH 990
+#define MAINWINDOW_WIDTH 1381
+#define BACK_GROUND_HEIGHT 594
+#define BACK_GROUND_WIDTH 876
+#define TOP 43
+#define DOWN 48
+#define LEFT 50
 //注意，背景坐标和程序框坐标有差！
 
 #define FPS 60

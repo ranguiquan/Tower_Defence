@@ -14,27 +14,27 @@
 Scene::Scene()
 {
     Tower* displayedTower = new Tower("attacker", false);
-    displayedTower->setGameObject(ATTACKER_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER_HEIGHT/2);
+    displayedTower->setGameObject(ATTACKER_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
     displayedTower = new Tower("attacker1", false);
-    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER1_HEIGHT/2);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER1_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
     displayedTower = new Tower("attacker2", false);
-    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER2_HEIGHT/2);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER2_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
     displayedTower = new Tower("attacker3", false);
-    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER3_HEIGHT/2);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER3_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
     displayedTower = new Tower("attacker4", false);
-    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH+ATTACKER4_WIDTH/2, MAINWINDOW_HEIGHT-ATTACKER4_HEIGHT/2);
+    displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH+ATTACKER4_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER4_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
     background = new QPixmap;
-    background->load(":/pictures/background/backGround2.png");
+    background->load(":/pictures/background/backGround1.png");
     player = new Player;
     secondCounter = 0.0;
     manualMod = false;
@@ -56,7 +56,7 @@ void Scene::show(QPainter* p){
     //画背景
     //player->show(p);
     //qDebug()<<"p->drawPixmap"<<endl;
-    p->drawPixmap(0,0/*MAINWINDOW_HEIGHT-BACK_GROUND_HEIGHT*/,BACK_GROUND_WIDTH,BACK_GROUND_HEIGHT,*background);
+    p->drawPixmap(0,0,MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT,*background);
 
     //仇恨管理一定要在开火管理之前，否则会导致bug
     //qDebug()<<"processor_hatredControll()"<<endl;
@@ -337,7 +337,7 @@ void Scene::enemy_generator()
     int a,b;
     Enemy* tmp;
     Blood *blood;
-    b=qrand()%7;//设置一次生成的敌人个数，敌人个数不超过7
+    b=qrand()%6;//设置一次生成的敌人个数，敌人个数不超过7
     for(int i=0;i<b;i++)
     {
         a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率
@@ -371,7 +371,7 @@ void Scene::enemy_generator()
         case 0:tmp = new Enemy("Enemy9");break;
         }
 
-        tmp->setGameObject(0,100+i*100);
+        tmp->setGameObject(LEFT,100+i*100);
         enemies.push_back(tmp);
 
 
@@ -401,7 +401,7 @@ void Scene::object_delete()
             i--;
             if(i < 0){continue;}
         }
-        if(((enemies[i])->getPosition_x())>=(MAINWINDOW_WIDTH-ENEMY_1_WIDTH/2))
+        if(((enemies[i])->getPosition_x())>=(LEFT+BACK_GROUND_WIDTH-ENEMY_1_WIDTH/2))
         {
             for(int j = 0; j < towers.size(); j++){
                 int index = towers[j]->hatred.indexOf(enemies[i]);
@@ -420,10 +420,11 @@ void Scene::object_delete()
     }
 
     for(int i = 0; i < bullets.size(); i++){
-        if(bullets[i]->getPosition_x() < 0
-                || bullets[i]->getPosition_x() > MAINWINDOW_WIDTH
-                || bullets[i]->getPosition_y() < 0
-                || bullets[i]->getPosition_y() > MAINWINDOW_HEIGHT){
+        if(bullets[i]->getPosition_x() < LEFT
+                        || bullets[i]->getPosition_x() > LEFT+BACK_GROUND_WIDTH
+                        || bullets[i]->getPosition_y() < LEFT
+                        || bullets[i]->getPosition_y() > TOP+BACK_GROUND_HEIGHT)
+        {
             //qDebug()<<"删除子弹"<<endl;
             delete bullets[i];
             bullets.erase(bullets.begin() + i);

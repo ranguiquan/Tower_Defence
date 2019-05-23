@@ -22,5 +22,8 @@
         <file>pictures/enemy/radius_back.png</file>
         <file>pictures/tower/tower5.png</file>
         <file>pictures/bullet/bullet3.png</file>
+        <file>pictures/background/backGround1.png</file>
+        <file>pictures/background/backGround3.png</file>
+        <file>pictures/background/backGround4.png</file>
     </qresource>
 </RCC>
