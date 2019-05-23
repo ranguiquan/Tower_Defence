@@ -185,7 +185,7 @@ void Scene::processor_mouseMoveEvent(QMouseEvent *e){
 void Scene::processor_keyPressEvent(QKeyEvent *e){
     if(e->key()==Qt::Key_0){
         delete towers[0];
-        towers.erase(towers.begin()+towers.size());
+        towers.erase(towers.begin());
     }
 }
 
@@ -267,7 +267,6 @@ void Scene::processor_damageConfirm(){
     for(i = 0; i < enemies.size(); i++){
         for(j = 0; j < bullets.size(); j++){
             if(enemies[i]->isMyPointInIt(bullets[j]->getPosition())){
-                qDebug()<<"setDamaged: "<<this->secondCounter<<endl;
                 enemies[i]->setDamaged(true);
                 enemies[i]->setLife(enemies[i]->getLife() - bullets[j]->getDamage());
                 if(enemies[i]->get_velocity()>0)
