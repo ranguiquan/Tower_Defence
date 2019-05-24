@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QTime>
 
+#include <QMessageBox>
+
 MainWindow::MainWindow(QMainWindow *parent) :
     QMainWindow (parent),
     ui(new Ui::MainWindow),
@@ -28,6 +30,10 @@ MainWindow::MainWindow(QMainWindow *parent) :
     this->refresher = new QTimer;
     refresher->start(1000/FPS);
     QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(update()));
+
+    this->addMoney = new QTimer;
+    addMoney->start(10000);
+    QObject::connect(addMoney, SIGNAL(timeout()),this, SLOT(add_money()));
 
 }
 
@@ -59,3 +65,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e){
     world.processor_mouseReleseEvent(e);
 }
 
+void MainWindow::add_money(){
+    world.money_add(PLAYER_1_MONEY_ADD);
+}

@@ -30,7 +30,10 @@ protected:
 private:
     Ui::MainWindow *ui;
     QTimer* refresher;//刷新用计时器
+    QTimer* addMoney;//定时加金币
     Scene world;
+private slots:
+    void add_money();
 
 };
 

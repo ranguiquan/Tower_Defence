@@ -96,6 +96,10 @@
 #define PLAYER_1_WIDTH 40
 #define PLAYER_1_HEIGHT 80
 #define PLAYER_1_LIFE 100
+#define PLAYER_1_LIFE 100
+#define PLAYER_1_MONEY 100
+
+#define PLAYER_1_MONEY_ADD 10 //每10s加金币数
 
 //子弹数据
 #define BULLET_WIDTH 20

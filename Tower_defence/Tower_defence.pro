@@ -35,7 +35,8 @@ SOURCES += \
     tool.cpp \
     player.cpp \
     enemy.cpp \
-    blood.cpp
+    blood.cpp \
+    playerinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,7 +49,8 @@ HEADERS += \
     tool.h \
     player.h \
     enemy.h \
-    blood.h
+    blood.h \
+    playerinfo.h
 
 FORMS += \
         mainwindow.ui \

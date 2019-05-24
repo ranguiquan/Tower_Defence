@@ -10,6 +10,8 @@
 #include <QProgressBar>
 #include <QTimer>
 #include "blood.h"
+#include "playerinfo.h"
+#include <QMessageBox>
 
 Scene::Scene()
 {
@@ -36,6 +38,8 @@ Scene::Scene()
     background = new QPixmap;
     background->load(":/pictures/background/backGround1.png");
     player = new Player;
+    player_life = new PlayerInfo(player,"life");
+    player_money = new PlayerInfo(player,"money");
     secondCounter = 0.0;
     manualMod = false;
 }
@@ -57,6 +61,9 @@ void Scene::show(QPainter* p){
     //player->show(p);
     //qDebug()<<"p->drawPixmap"<<endl;
     p->drawPixmap(0,0,MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT,*background);
+
+    player_life->show(p);
+    player_money->show(p);
 
     //仇恨管理一定要在开火管理之前，否则会导致bug
     //qDebug()<<"processor_hatredControll()"<<endl;
@@ -143,7 +150,18 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
         int j = 0;
         for(j = 0; j < dragedTower.size(); j++){
             dragedTower[j]->setActivated(true);
-            towers.push_back(dragedTower[j]);
+            if(player->getMoney()<dragedTower[j]->getDamage()){
+                //金币不足
+                QMessageBox::warning(NULL, "warning", "No Money!");
+                break;
+            }
+            else {
+                towers.push_back(dragedTower[j]);
+
+                player->setMoney(player->getMoney()-dragedTower[j]->getDamage()*2);
+                //玩家金币减少,塔的费用和Damage成比例
+            }
+
         }
         dragedTower.clear();
         int k=0;
@@ -435,5 +453,10 @@ void Scene::object_delete()
     if(player->getLife()==0)
     {
        //游戏结束，失败
+       QMessageBox::warning(NULL, "warning", "YOU LOSE!");
     }
+}
+
+void Scene::money_add(int a){
+    player->setMoney(player->getMoney()+a);
 }

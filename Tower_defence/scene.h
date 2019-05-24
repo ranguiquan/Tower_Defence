@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "player.h"
+#include "playerinfo.h"
 #include "blood.h"
 #include <QTime>
 #include <QDialog>
@@ -45,6 +46,8 @@ public:
     void life_show(QMouseEvent* e);//显示敌人血条
     void enemy_generator();//敌人生成器
 
+    void money_add(int a); //加金币
+
 
 private:
     QVector<Tower*> towers;//防御塔列表（已激活）
@@ -55,6 +58,7 @@ private:
     QVector<Blood*> bloods;
     QPixmap* background;//背景
     Player *player;
+    PlayerInfo *player_life, *player_money;
     float secondCounter;
     bool manualMod;//可以手动控制
     MyPoint mouseMoveEventPoint;

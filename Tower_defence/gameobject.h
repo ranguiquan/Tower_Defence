@@ -19,6 +19,7 @@ public:
     void show(QPainter* p);
     bool isMouseEventInIt(QMouseEvent* e);//检测鼠标事件是否点中该对象
     bool isMyPointInIt(MyPoint p);//检测点是否在对象中
+
 protected:
     MyPoint position;//注意！这个position是中点位置
     QPixmap* icon;
