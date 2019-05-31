@@ -14,7 +14,7 @@ Tower::Tower(string name, bool isInstanlized)
             width = ATTACKER_WIDTH;
             height = ATTACKER_HEIGHT;
             discoveryRange = ATTACKER_DISCOVERY;
-
+            price=ATTACKER_PRICE;
             isActivated = false;
             isChosen = false;
             fireReady = false;
@@ -31,7 +31,7 @@ Tower::Tower(string name, bool isInstanlized)
             width = ATTACKER1_WIDTH;
             height = ATTACKER1_HEIGHT;
             discoveryRange = ATTACKER1_DISCOVERY;
-
+            price=ATTACKER1_PRICE;
             isActivated = false;
             isChosen = false;
             fireReady = false;
@@ -47,7 +47,7 @@ Tower::Tower(string name, bool isInstanlized)
             width = ATTACKER2_WIDTH;
             height = ATTACKER2_HEIGHT;
             discoveryRange = ATTACKER2_DISCOVERY;
-
+            price=ATTACKER2_PRICE;
             isActivated = false;
             isChosen = false;
             fireReady = false;
@@ -63,7 +63,7 @@ Tower::Tower(string name, bool isInstanlized)
             width = ATTACKER3_WIDTH;
             height = ATTACKER3_HEIGHT;
             discoveryRange = ATTACKER3_DISCOVERY;
-
+            price=ATTACKER3_PRICE;
             isActivated = false;
             isChosen = false;
             fireReady = false;
@@ -79,7 +79,7 @@ Tower::Tower(string name, bool isInstanlized)
             width = ATTACKER4_WIDTH;
             height = ATTACKER4_HEIGHT;
             discoveryRange = ATTACKER4_DISCOVERY;
-
+            price=ATTACKER4_PRICE;
             isActivated = false;
             isChosen = false;
             fireReady = false;

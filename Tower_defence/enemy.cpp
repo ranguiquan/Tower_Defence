@@ -4,6 +4,7 @@
 
 Enemy::Enemy(string name)
 {
+    this->type=name;
     this->damage = false;
     if(name.compare("Enemy") == 0)
     {

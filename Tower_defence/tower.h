@@ -37,6 +37,7 @@ public:
     bool getRotateReady()const{return rotateReady;}
     void setRotateReady(bool i){rotateReady = i;}
     string getType(){return type;}
+    int getPrice(){return price;}
 
 private:
     int damage;
@@ -50,6 +51,7 @@ private:
     float angle;//炮管∠
     float velocity_rotation;//炮台转速
     string type;
+    int price;
 };
 
 #endif // TOWER_H

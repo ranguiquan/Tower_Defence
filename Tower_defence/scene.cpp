@@ -8,10 +8,11 @@
 #include <QLabel>
 #include <QWidget>
 #include <QProgressBar>
+#include <QApplication>
 #include <QTimer>
 #include "blood.h"
 #include "playerinfo.h"
-#include <QMessageBox>
+
 
 Scene::Scene()
 {
@@ -37,19 +38,28 @@ Scene::Scene()
 
     background = new QPixmap;
     background->load(":/pictures/background/backGround1.png");
+    mapname=":/pictures/background/backGround1.png";
     player = new Player;
     player_life = new PlayerInfo(player,"life");
     player_money = new PlayerInfo(player,"money");
     secondCounter = 0.0;
     manualMod = false;
+    frequency=4;
 }
 
 Scene::~Scene(){
 }
 
-/*void Scene::setScene(QString map_name){
-
-}*/
+void Scene::setScene(QString map_name){
+    QApplication::setQuitOnLastWindowClosed(false);
+    mapname=map_name;
+    QMessageBox message(QMessageBox::NoIcon, "Ready for Next Round", "New round! Are you ready?");
+    message.setIconPixmap(QPixmap(":/pictures/enemy/enemy9.png"));
+    message.exec();
+    delete background;
+    background=new QPixmap;
+    background->load(map_name);
+}
 
 void Scene::show(QPainter* p){
 
@@ -58,7 +68,6 @@ void Scene::show(QPainter* p){
     int i;
     secondCounter += 1.0/FPS;
     //画背景
-    //player->show(p);
     //qDebug()<<"p->drawPixmap"<<endl;
     p->drawPixmap(0,0,MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT,*background);
 
@@ -86,7 +95,7 @@ void Scene::show(QPainter* p){
     //qDebug()<<"processor_damageConfirm()"<<endl;
     processor_damageConfirm();
     //qDebug()<<"enemy_generator()"<<endl;
-    if(((secondCounter - int(secondCounter/5)*5) >= 0.0) && ((secondCounter - int(secondCounter/5)*5) < 1.0/FPS)){
+    if(((secondCounter - int(secondCounter/frequency)*frequency) >= 0.0) && ((secondCounter - int(secondCounter/frequency)*frequency) < 1.0/FPS)){
          enemy_generator();
     }
     //qDebug()<<"object_delete()"<<endl;
@@ -158,7 +167,7 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
             else {
                 towers.push_back(dragedTower[j]);
 
-                player->setMoney(player->getMoney()-dragedTower[j]->getDamage()*2);
+                player->setMoney(player->getMoney()-dragedTower[j]->getPrice());
                 //玩家金币减少,塔的费用和Damage成比例
             }
 
@@ -427,7 +436,27 @@ void Scene::object_delete()
                     towers[j]->hatred.erase(towers[j]->hatred.begin() + index);
                 }
             }
-            player->setLife(player->getLife()-1);
+            if(enemies[i]->type.compare("Enemy") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY1_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy1") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY2_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy2") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY3_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy3") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY4_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy4") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY5_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy5") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY6_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy6") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY7_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy7") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY8_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy8") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY9_LIFE_LOSE);
+            else if(enemies[i]->type.compare("Enemy9") == 0)
+                player->setLife(player->getLife()-PLAYER_ENEMY10_LIFE_LOSE);
+            //不同enemy到达基地，玩家生命损失不同
             delete enemies[i];
             delete bloods[i];
             enemies.erase(enemies.begin() + i);
@@ -450,10 +479,11 @@ void Scene::object_delete()
         }
     }
 
-    if(player->getLife()==0)
+    if(player->getLife()<=0)
     {
        //游戏结束，失败
-       QMessageBox::warning(NULL, "warning", "YOU LOSE!");
+       lose=1;
+
     }
 }
 

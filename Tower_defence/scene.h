@@ -14,6 +14,7 @@
 #include "blood.h"
 #include <QTime>
 #include <QDialog>
+#include <QMessageBox>
 
 class Scene: public QObject
 {
@@ -23,7 +24,7 @@ public:
     ~Scene();
 
     //一个未实现的场景切换
-    //void setScene(QString map_name);
+    void setScene(QString map_name);
 
     void show(QPainter* p);//最终画图的，画之前要先更新成员状态
 
@@ -40,14 +41,15 @@ public:
     void object_delete();//对象出界删除，删除到达终点或失去生命的敌人，删除生命为0的炮塔，删除死亡的主角
 
 
-
     static float distance(MyPoint a, MyPoint b);//返回两点间距离，不应该放在这，懒得改了，乐意改的话可以优化一下
 
     void life_show(QMouseEvent* e);//显示敌人血条
     void enemy_generator();//敌人生成器
 
     void money_add(int a); //加金币
-
+    int frequency;//控制不同场景下敌人生成的频率
+    QString mapname;
+    bool lose;
 
 private:
     QVector<Tower*> towers;//防御塔列表（已激活）
@@ -63,6 +65,7 @@ private:
     bool manualMod;//可以手动控制
     MyPoint mouseMoveEventPoint;
     bool mouseLeftPressed;
+
 
 
 };

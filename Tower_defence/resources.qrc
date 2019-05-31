@@ -17,13 +17,14 @@
         <file>pictures/tower/tower2.png</file>
         <file>pictures/tower/tower3.png</file>
         <file>pictures/tower/tower4.png</file>
-        <file>pictures/background/backGround2.png</file>
         <file>pictures/enemy/radius_front.png</file>
         <file>pictures/enemy/radius_back.png</file>
         <file>pictures/tower/tower5.png</file>
         <file>pictures/bullet/bullet3.png</file>
         <file>pictures/background/backGround1.png</file>
         <file>pictures/background/backGround3.png</file>
+        <file>pictures/background/backGround2.png</file>
         <file>pictures/background/backGround4.png</file>
+        <file>pictures/background/main.png</file>
     </qresource>
 </RCC>

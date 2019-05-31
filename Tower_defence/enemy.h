@@ -21,6 +21,7 @@ public:
     void setDamaged(bool b){damage=b;}
     bool getDamage(){return damage;}
     bool isChosen=0;
+    string type;
 public slots:
     void setischosen(bool b){isChosen=b;}
 
@@ -31,6 +32,7 @@ protected:
     double direction_x;
     double direction_y;
     bool damage;
+
 };
 
 #endif // ENEMY_H
