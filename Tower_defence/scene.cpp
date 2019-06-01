@@ -16,6 +16,27 @@
 
 Scene::Scene()
 {
+    background = new QPixmap;
+    background->load(":/pictures/background/main.png");
+    mapname=":/pictures/main.png";
+    player = new Player;
+    player_life = new PlayerInfo(player,"life");
+    player_money = new PlayerInfo(player,"money");
+    //player应当放在setscene函数里面，但是如果放进去程序无法运行
+
+}
+
+Scene::~Scene(){
+}
+
+void Scene::setScene(QString map_name){
+    QApplication::setQuitOnLastWindowClosed(false);
+    secondCounter = 0.0;
+    manualMod = false;
+    mapname=map_name;
+    delete background;
+    background=new QPixmap;
+    background->load(map_name);
     Tower* displayedTower = new Tower("attacker", false);
     displayedTower->setGameObject(ATTACKER_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
@@ -36,29 +57,39 @@ Scene::Scene()
     displayedTower->setGameObject(ATTACKER_WIDTH+ATTACKER1_WIDTH+ATTACKER2_WIDTH+ATTACKER3_WIDTH+ATTACKER4_WIDTH/2+LEFT, MAINWINDOW_HEIGHT-DOWN-ATTACKER4_HEIGHT/2);
     displayMenuOfTowers.push_back(displayedTower);
 
-    background = new QPixmap;
-    background->load(":/pictures/background/backGround1.png");
-    mapname=":/pictures/background/backGround1.png";
-    player = new Player;
-    player_life = new PlayerInfo(player,"life");
-    player_money = new PlayerInfo(player,"money");
-    secondCounter = 0.0;
-    manualMod = false;
-    frequency=4;
 }
 
-Scene::~Scene(){
-}
-
-void Scene::setScene(QString map_name){
-    QApplication::setQuitOnLastWindowClosed(false);
-    mapname=map_name;
-    QMessageBox message(QMessageBox::NoIcon, "Ready for Next Round", "New round! Are you ready?");
-    message.setIconPixmap(QPixmap(":/pictures/enemy/enemy9.png"));
-    message.exec();
+void Scene::clearScene()
+{
+    for(int i = 0; i < bullets.size(); i++){
+        delete bullets[i];
+        bullets.erase(bullets.begin() + i);
+        i--;
+    }
+    for(int i = 0; i < enemies.size(); i++){
+        delete enemies[i];
+        enemies.erase(enemies.begin() + i);
+        i--;
+    }
+    for(int i = 0; i < towers.size(); i++){
+        delete towers[i];
+        towers.erase(towers.begin() + i);
+        i--;
+    }
+    for(int i = 0; i < displayMenuOfTowers.size(); i++){
+        delete displayMenuOfTowers[i];
+        displayMenuOfTowers.erase(displayMenuOfTowers.begin() + i);
+        i--;
+    }
+    for(int i = 0; i < bloods.size(); i++){
+        delete bloods[i];
+        bloods.erase(bloods.begin() + i);
+        i--;
+    }
+ //   delete player;如果加上这句话没办法第二次quit，应该和上面是同一问题
     delete background;
     background=new QPixmap;
-    background->load(map_name);
+    background->load(":/pictures/background/main.png");
 }
 
 void Scene::show(QPainter* p){
@@ -483,7 +514,6 @@ void Scene::object_delete()
     {
        //游戏结束，失败
        lose=1;
-
     }
 }
 

@@ -14,32 +14,17 @@ MainWindow::MainWindow(QMainWindow *parent) :
     world()//world被默认初始化
 {
     ui->setupUi(this);
-
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
     setMouseTracking(true);
     centralWidget()->setMouseTracking(true);
 
-
     setWindowFlags(Qt::WindowCloseButtonHint);
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
 
+    ui->frame->hide();
+
     //world.setScene("");//初始化游戏世界
-
-    //设计计时器，以FPS帧数刷新画面
-    this->refresher = new QTimer;
-    refresher->start(1000/FPS);
-    QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(update()));
-    ui->pushButton_2->setEnabled(false);
-    ui->pushButton->setEnabled(true);
-
-    this->addMoney = new QTimer;
-    addMoney->start(10000);
-    QObject::connect(addMoney, SIGNAL(timeout()),this, SLOT(add_money()));
-
-    this->setscene=new QTimer;
-    setscene->start(20000);//每3分钟进入下一关
-    QObject::connect(setscene, SIGNAL(timeout()),this, SLOT(set_Scene()));
 
 }
 
@@ -77,33 +62,57 @@ void MainWindow::add_money(){
 
 void MainWindow::set_Scene(){
     refresher->stop();
+    addMoney->stop();
+    setscene->stop();
     if(world.mapname.compare(":/pictures/background/backGround1.png") == 0)
     {
+        QMessageBox message(QMessageBox::NoIcon, "Ready for Next Round", "New round! Are you ready?");
+        message.setIconPixmap(QPixmap(":/pictures/enemy/enemy1.png"));
+        message.exec();
         world.setScene(":/pictures/background/backGround2.png");
         world.frequency=3;
+        refresher->start(1000/FPS);
+        addMoney->start(10000);
+        setscene->start(ROUND_TIME);//每3分钟进入下一关
     }
     else if(world.mapname.compare(":/pictures/background/backGround2.png") == 0)
     {
+        QMessageBox message(QMessageBox::NoIcon, "Ready for Next Round", "New round! Are you ready?");
+        message.setIconPixmap(QPixmap(":/pictures/enemy/enemy2.png"));
+        message.exec();
         world.setScene(":/pictures/background/backGround3.png");
         world.frequency=2;
+        refresher->start(1000/FPS);
+        addMoney->start(10000);
+        setscene->start(ROUND_TIME);//每3分钟进入下一关
     }
     else if(world.mapname.compare(":/pictures/background/backGround3.png") == 0)
     {
+        QMessageBox message(QMessageBox::NoIcon, "Ready for Next Round", "New round! Are you ready?");
+        message.setIconPixmap(QPixmap(":/pictures/enemy/enemy4.png"));
+        message.exec();
         world.setScene(":/pictures/background/backGround4.png");
         world.frequency=1;
+        refresher->start(1000/FPS);
+        addMoney->start(10000);
+        setscene->start(ROUND_TIME);//每3分钟进入下一关
     }
     else if(world.mapname.compare(":/pictures/background/backGround4.png") == 0)
     {
-        QMessageBox message1(QMessageBox::NoIcon, "Congratulations!", "Congratulations! You win!");
-        message1.setIconPixmap(QPixmap(":/pictures/enemy/enemy10.png"));
-        message1.exec();
+        int nRet2=QMessageBox::information(NULL, "Congratulations!", "Congratulations! You win!", QMessageBox::Yes, QMessageBox::Yes);
+        if (QMessageBox::Yes == nRet2) {
+            world.clearScene();
+            ui->frame->hide();
+            ui->frame_2->show();
+        }
     }
-    refresher->start(1000/FPS);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     refresher->stop();
+    addMoney->stop();
+    setscene->stop();
     ui->pushButton->setEnabled(false);
     ui->pushButton_2->setEnabled(true);
 }
@@ -111,6 +120,99 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     refresher->start();
+    addMoney->start();
+    setscene->start();
+/*本来想加一个记录当前计时器描述，避免重新开始后清零的，但是有问题
+    int a,b;
+    a=abs(addMoney->remainingTime());
+    b=abs(setscene->remainingTime());
+    addMoney1->setSingleShot(1);
+    addMoney1->start(a);
+    if(addMoney1->remainingTime()==0)
+        addMoney->start(10000);
+//    QObject::connect(addMoney, SIGNAL(timeout()),this, SLOT(add_money()));
+    //为防止暂停后计时器清零，记录当前时间
+
+    setscene1->singleShot(b,setscene,SLOT(start(ROUND_TIME)));
+//    QObject::connect(setscene, SIGNAL(timeout()),this, SLOT(set_Scene()));
+*/
     ui->pushButton_2->setEnabled(false);
     ui->pushButton->setEnabled(true);
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    ui->frame_2->hide();
+    ui->frame->show();
+    world.setScene(":/pictures/background/backGround1.png");
+    //设计计时器，以FPS帧数刷新画面
+    world.lose=0;
+    world.frequency=4;
+    world.player->setLife(100);
+    world.player->setMoney(100);//因为没办法在新游戏开始时建立新的player，只能在这里将player复原
+    this->refresher = new QTimer;
+    refresher->start(1000/FPS);
+    QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(update()));
+
+    ui->pushButton_2->setEnabled(false);
+    ui->pushButton->setEnabled(true);
+    QObject::connect(refresher, SIGNAL(timeout()), this, SLOT(show_lose()));
+
+    this->addMoney = new QTimer;
+    addMoney->start(10000);
+    QObject::connect(addMoney, SIGNAL(timeout()),this, SLOT(add_money()));
+
+    this->setscene=new QTimer;
+    setscene->start(ROUND_TIME);//每3分钟进入下一关
+    QObject::connect(setscene, SIGNAL(timeout()),this, SLOT(set_Scene()));
+}
+
+void MainWindow::on_pushButton_3_clicked()//点击后退回主界面，可以在这里加存档功能
+{
+    refresher->stop();
+    addMoney->stop();
+    setscene->stop();
+    int nRet = QMessageBox::question(NULL, "Quit?", "Are you sure to quit?", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+    // 选择是，这里可以加对话框问是否存档
+    if (QMessageBox::Yes == nRet) {
+        int nRet1=QMessageBox::question(NULL, "Save?", "Save the file?", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+        if (QMessageBox::No == nRet1) {
+            refresher->start(1000/FPS);//调用refresher将画面重绘清零
+            world.clearScene();
+            ui->frame->hide();
+            ui->frame_2->show();
+            refresher->stop();
+        }
+        if (QMessageBox::Yes == nRet1) {
+           //存档
+        }
+    }
+
+    // 选择否
+    if (QMessageBox::No == nRet) {
+        refresher->start(1000/FPS);
+        addMoney->start(10000);
+        setscene->start(ROUND_TIME);
+    }
+}
+
+void MainWindow::show_lose()
+{
+    if(world.lose==1)
+    {
+        refresher->stop();
+        addMoney->stop();
+        setscene->stop();
+        int a=QMessageBox::warning(NULL, "warning", "YOU LOSE!", QMessageBox::Yes, QMessageBox::Yes);
+        if (QMessageBox::Yes == a) {
+            world.clearScene();
+            ui->frame->hide();
+            ui->frame_2->show();
+        }
+    }
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    MainWindow::close();
 }

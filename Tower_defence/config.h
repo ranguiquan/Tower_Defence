@@ -130,6 +130,6 @@
 #define BULLET4_SLOWER 10
 
 //每一局游戏的时间
-#define ROUND_TIME 10
+#define ROUND_TIME 20000
 
 #endif // CONFIG_H

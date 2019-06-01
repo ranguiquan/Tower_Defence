@@ -13,6 +13,5 @@ int main(int argc, char *argv[])
     MainWindow w;
     a.connect( &a, SIGNAL( lastWindowClosed() ), &a, SLOT( quit() ) );
     w.show();
-    w.show_lose();
     return a.exec();
 }
