@@ -99,15 +99,13 @@ void Scene::saveScene()
     delete background;
     background=new QPixmap;
     background->load(":/pictures/background/main.png");
-    mapname=":/pictures/background/main.png";
 }
 
 void Scene::returntoScene()
 {
     delete background;
     background=new QPixmap;
-    background->load(":/pictures/background/backGround1.png");
-    mapname=":/pictures/background/backGround1.png";
+    background->load(mapname);
 }
 
 void Scene::show(QPainter* p){
@@ -421,7 +419,7 @@ void Scene::enemy_generator()
     int a,b;
     Enemy* tmp;
     Blood *blood;
-    b=qrand()%6;//设置一次生成的敌人个数，敌人个数不超过7
+    b=qrand()%6;//设置一次生成的敌人个数，敌人个数不超过6
     for(int i=0;i<b;i++)
     {
         a=qrand()%10;//设置生成的敌人种类，种类数为10，根据case数控制敌人出现频率

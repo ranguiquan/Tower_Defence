@@ -73,7 +73,7 @@ void MainWindow::set_Scene(){
         world.frequency=3;
         refresher->start(1000/FPS);
         addMoney->start(10000);
-        setscene->start(ROUND_TIME);//每3分钟进入下一关
+        setscene->start(ROUND_TIME);//进入下一关
     }
     else if(world.mapname.compare(":/pictures/background/backGround2.png") == 0)
     {

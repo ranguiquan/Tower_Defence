@@ -23,7 +23,7 @@ public:
     Scene();
     ~Scene();
 
-    //一个未实现的场景切换
+
     void setScene(QString map_name);
 
     void show(QPainter* p);//最终画图的，画之前要先更新成员状态
