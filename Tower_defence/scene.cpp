@@ -18,7 +18,7 @@ Scene::Scene()
 {
     background = new QPixmap;
     background->load(":/pictures/background/main.png");
-    mapname=":/pictures/main.png";
+    mapname=":/pictures/background/main.png";
     player = new Player;
     player_life = new PlayerInfo(player,"life");
     player_money = new PlayerInfo(player,"money");
@@ -61,6 +61,7 @@ void Scene::setScene(QString map_name){
 
 void Scene::clearScene()
 {
+    savedscene=0;
     for(int i = 0; i < bullets.size(); i++){
         delete bullets[i];
         bullets.erase(bullets.begin() + i);
@@ -90,6 +91,23 @@ void Scene::clearScene()
     delete background;
     background=new QPixmap;
     background->load(":/pictures/background/main.png");
+    mapname=":/pictures/background/main.png";
+}
+
+void Scene::saveScene()
+{
+    delete background;
+    background=new QPixmap;
+    background->load(":/pictures/background/main.png");
+    mapname=":/pictures/background/main.png";
+}
+
+void Scene::returntoScene()
+{
+    delete background;
+    background=new QPixmap;
+    background->load(":/pictures/background/backGround1.png");
+    mapname=":/pictures/background/backGround1.png";
 }
 
 void Scene::show(QPainter* p){
@@ -102,8 +120,11 @@ void Scene::show(QPainter* p){
     //qDebug()<<"p->drawPixmap"<<endl;
     p->drawPixmap(0,0,MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT,*background);
 
-    player_life->show(p);
-    player_money->show(p);
+    if(mapname!=":/pictures/background/main.png")
+    {
+        player_life->show(p);
+        player_money->show(p);
+    }
 
     //仇恨管理一定要在开火管理之前，否则会导致bug
     //qDebug()<<"processor_hatredControll()"<<endl;
@@ -132,37 +153,42 @@ void Scene::show(QPainter* p){
     //qDebug()<<"object_delete()"<<endl;
     object_delete();
 
-    //qDebug()<<"towers[i]->show(p)"<<endl;
-    for(i = 0; i < towers.size(); i++){
-        towers[i]->show(p);
-    }
-
-    //qDebug()<<"displayMenuOfTowers[i]->show(p)"<<endl;
-    for(i = 0; i < displayMenuOfTowers.size(); i++){
-        displayMenuOfTowers[i]->show(p);
-    }
-
-    //qDebug()<<"dragedTower[i]->show(p)"<<endl;
-    for(i = 0; i < dragedTower.size(); i++){
-        dragedTower[i]->show(p);
-    }
-
-    //qDebug()<<"enemies[i]->show(p)"<<endl;
-    for(i = 0; i < enemies.size(); i++){
-        enemies[i]->show(p);
-    }
-
-    //qDebug()<<"bloods[i]->show(p)"<<endl;
-    for(i=0;i<bloods.size();i++)
+    if(mapname!=":/pictures/background/main.png")
     {
-        bloods[i]->show(p);
-    }
+        //qDebug()<<"towers[i]->show(p)"<<endl;
+        for(i = 0; i < towers.size(); i++){
+            towers[i]->show(p);
+        }
 
-    //qDebug()<<"bullets[i]->show(p)"<<endl;
-    for(i = 0; i < bullets.size(); i++){
-        bullets[i]->show(p);
+        //qDebug()<<"displayMenuOfTowers[i]->show(p)"<<endl;
+        for(i = 0; i < displayMenuOfTowers.size(); i++){
+            displayMenuOfTowers[i]->show(p);
+        }
+
+        //qDebug()<<"dragedTower[i]->show(p)"<<endl;
+        for(i = 0; i < dragedTower.size(); i++){
+            dragedTower[i]->show(p);
+        }
+
+        //qDebug()<<"enemies[i]->show(p)"<<endl;
+        for(i = 0; i < enemies.size(); i++){
+            enemies[i]->show(p);
+        }
+
+        //qDebug()<<"bloods[i]->show(p)"<<endl;
+        for(i=0;i<bloods.size();i++)
+        {
+            bloods[i]->show(p);
+        }
+
+        //qDebug()<<"bullets[i]->show(p)"<<endl;
+        for(i = 0; i < bullets.size(); i++){
+            bullets[i]->show(p);
+        }
     }
 }
+
+
 void Scene::processor_mousePressEvent(QMouseEvent *e){
     int i;
     if(e->button() == Qt::LeftButton && manualMod == false){
@@ -199,7 +225,7 @@ void Scene::processor_mousePressEvent(QMouseEvent *e){
                 towers.push_back(dragedTower[j]);
 
                 player->setMoney(player->getMoney()-dragedTower[j]->getPrice());
-                //玩家金币减少,塔的费用和Damage成比例
+                //玩家金币减少
             }
 
         }

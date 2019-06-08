@@ -41,6 +41,8 @@ public:
     void object_delete();//对象出界删除，删除到达终点或失去生命的敌人，删除生命为0的炮塔，删除死亡的主角
 
     void clearScene();//退出时清除游戏场景
+    void saveScene();//退出时简易存档
+    void returntoScene();//返回刚刚退出时简易存档
     static float distance(MyPoint a, MyPoint b);//返回两点间距离，不应该放在这，懒得改了，乐意改的话可以优化一下
 
     void life_show(QMouseEvent* e);//显示敌人血条
@@ -51,6 +53,7 @@ public:
     QString mapname;
     bool lose;
     Player *player;
+    bool savedscene;//判断是否有已经存在的游戏场景
 
 private:
     QVector<Tower*> towers;//防御塔列表（已激活）

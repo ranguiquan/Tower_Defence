@@ -94,8 +94,8 @@
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
+      <x>50</x>
+      <y>50</y>
       <width>161</width>
       <height>121</height>
      </rect>
@@ -106,19 +106,6 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>50</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
@@ -145,9 +132,20 @@
       <string>start a new game</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>continue last game</string>
+     </property>
+    </widget>
    </widget>
-   <zorder>frame_2</zorder>
-   <zorder>frame</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

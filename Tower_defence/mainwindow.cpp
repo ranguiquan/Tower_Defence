@@ -108,7 +108,7 @@ void MainWindow::set_Scene(){
     }
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked()//stop
 {
     refresher->stop();
     addMoney->stop();
@@ -117,7 +117,7 @@ void MainWindow::on_pushButton_clicked()
     ui->pushButton_2->setEnabled(true);
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButton_2_clicked()//start
 {
     refresher->start();
     addMoney->start();
@@ -140,12 +140,15 @@ void MainWindow::on_pushButton_2_clicked()
     ui->pushButton->setEnabled(true);
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::on_pushButton_4_clicked()//start new game
 {
+    if(world.savedscene==1)
+        world.clearScene();//开始新游戏前判断是否有旧游戏，如果有删档
     ui->frame_2->hide();
     ui->frame->show();
     world.setScene(":/pictures/background/backGround1.png");
     //设计计时器，以FPS帧数刷新画面
+    world.savedscene=1;
     world.lose=0;
     world.frequency=4;
     world.player->setLife(100);
@@ -167,7 +170,7 @@ void MainWindow::on_pushButton_4_clicked()
     QObject::connect(setscene, SIGNAL(timeout()),this, SLOT(set_Scene()));
 }
 
-void MainWindow::on_pushButton_3_clicked()//点击后退回主界面，可以在这里加存档功能
+void MainWindow::on_pushButton_3_clicked()//点击后退回主界面，可以在这里加存档功能quit
 {
     refresher->stop();
     addMoney->stop();
@@ -182,9 +185,13 @@ void MainWindow::on_pushButton_3_clicked()//点击后退回主界面，可以在
             ui->frame->hide();
             ui->frame_2->show();
             refresher->stop();
+            ui->pushButton_5->setEnabled(false);
         }
         if (QMessageBox::Yes == nRet1) {
-           //存档
+            world.saveScene();
+            ui->frame->hide();
+            ui->frame_2->show();
+            ui->pushButton_5->setEnabled(true);
         }
     }
 
@@ -212,7 +219,17 @@ void MainWindow::show_lose()
     }
 }
 
-void MainWindow::on_pushButton_6_clicked()
+void MainWindow::on_pushButton_6_clicked()//exit
 {
     MainWindow::close();
+}
+
+void MainWindow::on_pushButton_5_clicked()//continue last game
+{
+    world.returntoScene();
+    ui->frame_2->hide();
+    ui->frame->show();
+    refresher->start(1000/FPS);
+    addMoney->start(10000);
+    setscene->start(ROUND_TIME);
 }
