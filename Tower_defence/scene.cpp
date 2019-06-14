@@ -99,13 +99,16 @@ void Scene::saveScene()
     delete background;
     background=new QPixmap;
     background->load(":/pictures/background/main.png");
+    mapname1=mapname;
+    mapname=":/pictures/background/main.png";
 }
 
 void Scene::returntoScene()
 {
     delete background;
     background=new QPixmap;
-    background->load(mapname);
+    background->load(mapname1);
+    mapname=mapname1;
 }
 
 void Scene::show(QPainter* p){

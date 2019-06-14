@@ -50,7 +50,7 @@ public:
 
     void money_add(int a); //加金币
     int frequency;//控制不同场景下敌人生成的频率
-    QString mapname;
+    QString mapname,mapname1;
     bool lose;
     Player *player;
     bool savedscene;//判断是否有已经存在的游戏场景

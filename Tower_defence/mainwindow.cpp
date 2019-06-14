@@ -180,11 +180,9 @@ void MainWindow::on_pushButton_3_clicked()//点击后退回主界面，可以在
     if (QMessageBox::Yes == nRet) {
         int nRet1=QMessageBox::question(NULL, "Save?", "Save the file?", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
         if (QMessageBox::No == nRet1) {
-            refresher->start(1000/FPS);//调用refresher将画面重绘清零
             world.clearScene();
             ui->frame->hide();
             ui->frame_2->show();
-            refresher->stop();
             ui->pushButton_5->setEnabled(false);
         }
         if (QMessageBox::Yes == nRet1) {
